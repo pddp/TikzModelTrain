@@ -31,7 +31,6 @@
 \def\Color{black}
 
 \def\AddToAngle#1{%
-   % \typeout{Angle = \Angle}%
    \pgfmathsetmacro\XAngle{\Angle + #1}%
    \pgfmathsetmacro\YAngle{\Angle > 360 ? \XAngle -360 : \XAngle}%
    \pgfmathsetmacro\ZAngle{\Angle < -360 ? \YAngle +360 : \YAngle}%
@@ -98,21 +97,21 @@
 
 \def\NoOb{arc [radius = 50, start angle=0, end angle=0] node}
 
-\def\SavePosAngle#1{coordinate(#1) 
+\def\SavePosAngle#1{coordinate(#1)%
     \NoOb{\@namegedef{#1-angle}{\Angle}%
           \@namegedef{#1-height}{\Height}}}
 
-\def\RestPosAngle#1{(#1) 
+\def\RestPosAngle#1{(#1)% 
     \NoOb{\global\edef\Angle{\@nameuse{#1-angle}}%
           \global\edef\Height{\@nameuse{#1-height}}}}
 
-\def\NormalGerade#1{-- +(\Angle:#1) node {\Bullet} 
+\def\NormalGerade#1{-- +(\Angle:#1) node {\Bullet}%
     \NoOb {%
         \ifnum\Incl>0\relax
            \pgfmathsetmacro\Xheight{1.02 * \Height}%
            \global\edef\Height{\Xheight}%
         \fi
-    }
+    }%
 }
 %%%
 \def\RKurvePar#1#2#3{\KurvePar{#1}{#2}{#3}{90}}
@@ -125,11 +124,11 @@
         \global\edef\StartA{\XStartA}%
         \global\edef\EndA{\XEndA}%
         % \tiny{#3}%
-    }
+    }%
 	arc [radius=#1,                % fix
          start angle=\StartA,      % Angle +  90
 	 	 end angle=\EndA]          % Angle +  60
-         node {\AddToAngle{-#2}\Bullet}
+         node {\AddToAngle{-#2}\Bullet}%
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                              
@@ -153,7 +152,7 @@
    \NormalGerade{18}%
    \SavePosAngle{#1}%
    \SavePosAngle{#1S}%
-   \NoOb {\AddToAngle{-180}}
+   \NoOb {\AddToAngle{-180}}%
    \LKurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
@@ -168,7 +167,7 @@
 \def\RWeicheParS#1#2#3#4{%
    \NormalGerade{18}%
    \SavePosAngle{#1S}%
-   \NoOb {\AddToAngle{-180}}
+   \NoOb {\AddToAngle{-180}}%
    \RKurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1S}%
@@ -176,7 +175,7 @@
 \def\RWeicheParC#1#2#3#4{%
    \LKurvePar{#2}{#3}{#4}{}%  % R curve!
    \SavePosAngle{#1O}%
-   \NoOb {\AddToAngle{-180}}
+   \NoOb {\AddToAngle{-180}}%
    \NormalGerade{18}%
    \SavePosAngle{#1S}%
    \RestPosAngle{#1O}%
