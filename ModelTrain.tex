@@ -1,0 +1,428 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{translations}  % tests for language base
+\usepackage{calc}
+\usepackage{ifthen} 
+\usepackage{pgfkeys} 
+\usepackage{hyperref}
+\geometry{hoffset=-1cm,marginparwidth=0cm,textwidth=17cm,textheight=252mm}
+\usepackage{tikz}
+\usetikzlibrary{math,calc,intersections}
+\usepackage{ifthen}
+\usepackage{graphicx}
+\parindent=0pt
+\parskip=1ex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \usepackage{etoolbox} 
+% \usepackage{sverb}
+% \usepackage{math}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{layout}
+\makeatletter
+\renewcommand*{\lay@value}[2]{\strip@pt\dimexpr0.351459\dimexpr\csname#2\endcsname\relax\relax mm}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\DebugNode#1{node {#1}}
+\def\DebugCoord(#1){(#1) node {#1}}
+\def\DebugNode#1{}
+\def\DebugCoord(#1){(#1)}
+
+\def\Raumlaenge{400}
+\def\Raumbreite{250}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+
+\def\@namegedef#1{\global\expandafter\edef\csname #1\endcsname}
+
+\def\Angle{00}    % global: current orientation
+\def\Height{0}    % global: current height
+\def\Incl{0}      % inclination
+
+\def\Up{\NoOb{\global\def\Incl{1}}}
+\def\Flat{\NoOb{\global\def\Incl{0.0}}}
+\def\Down{\NoOb{\global\def\Incl{-1}}}
+\def\Color{black}
+
+\def\AddToAngle#1{%
+   % \typeout{Angle = \Angle}%
+   \pgfmathsetmacro\XAngle{\Angle + #1}%
+   \pgfmathsetmacro\YAngle{\Angle > 360 ? \XAngle -360 : \XAngle}%
+   \pgfmathsetmacro\ZAngle{\Angle < -360 ? \YAngle +360 : \YAngle}%
+   \global\edef\Angle{\ZAngle}%
+}
+
+\makeatletter
+\newcommand\currentcoordinate{\the\tikz@lastxsaved,\the\tikz@lastysaved}
+
+\def\StepGleis#1{%
+   \expandafter\@tempcnta\@nameuse{N#1}%
+   \advance\@tempcnta by 1\relax
+   \@namegedef{N#1}{\the\@tempcnta}\relax
+}
+
+\def\Bullet{%
+   \pgfmathsetmacro\XAngle{\Angle + 90}%
+   \rotatebox{\XAngle}{\tiny{|}}%
+}
+
+\def\Rep#1{\foreach \i in {1,2,...,#1}}
+
+\def\Gerade#1{\@nameuse{G#1}\NoOb{\StepGleis{#1}}}
+\def\LKurve#1{\@nameuse{L#1}\NoOb{\StepGleis{#1}}}
+\def\RKurve#1{\@nameuse{R#1}\NoOb{\StepGleis{#1}}}
+\def\LWeiche[#1][#2]#3{\@nameuse{L#2#3}{#1}\NoOb{\StepGleis{#3}}}
+\def\RWeiche[#1][#2]#3{\@nameuse{R#2#3}{#1}\NoOb{\StepGleis{#3}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfkeys{%
+  /conf/.is family,%
+  /conf,%
+  id/.initial = {},%
+  german/.initial = {},%
+  english/.initial = {},%
+  type/.initial = {Straight},%
+  length/.initial = {0},%
+  angle/.initial = {0},%
+  radius/.initial = {0},%
+}
+\newcommand{\Config}[1]{%
+  \pgfkeys{/conf, 
+    #1,
+    id/.get=\Id,
+    type/.get=\Type,
+    german/.get=\German,
+    english/.get=\English,
+    angle/.get=\ConfAngle,
+    radius/.get=\ConfRadius,
+    length/.get=\ConfLength,
+  }%
+  \@namedef{N\Id}{0}\relax        % count of tracks for this id
+  \immediate\write\ConfigFile{\string\@namedef{D\Id}{\string\ifcurrentbaselanguage{English}{\English}{\German}}\relax} 
+  \immediate\write\ConfigFile{\string\@nameuse{Def\Type}{\Id}{\ConfLength}{\ConfRadius}{\ConfAngle}\relax}\relax
+}
+\def\DefStraight#1#2#3#4{\global\@namedef{G#1}{\NormalGerade{#2}}\relax% 
+    % \typeout{NormalGerade G#1 #2}%
+}
+\def\DefCurve#1#2#3#4{\global\@namedef{R#1}{\RKurvePar{#3}{#4}{#1}}\global\@namedef{L#1}{\LKurvePar{#3}{#4}{#1}}}
+\def\DefSwitchL#1#2#3#4{%
+    \@namedef{LO#1}##1{\LWeicheParO{##1}{#3}{#4}{#1}}%
+    \@namedef{LS#1}##1{\LWeicheParS{##1}{#3}{#4}{#1}}%
+    \@namedef{LC#1}##1{\LWeicheParC{##1}{#3}{#4}{#1}}%
+}
+\def\DefSwitchR#1#2#3#4{%
+    \@namedef{RO#1}##1{\RWeicheParO{##1}{#3}{#4}{#1}}%
+    \@namedef{RS#1}##1{\RWeicheParS{##1}{#3}{#4}{#1}}%
+    \@namedef{RC#1}##1{\RWeicheParC{##1}{#3}{#4}{#1}}%
+}
+
+\def\NoOb{arc [radius = 50, start angle=0, end angle=0] node}
+
+\def\SavePosAngle#1{coordinate(#1) 
+    \NoOb{\@namegedef{#1-angle}{\Angle}%
+          \@namegedef{#1-height}{\Height}}}
+
+\def\RestPosAngle#1{(#1) 
+    \NoOb{\global\edef\Angle{\@nameuse{#1-angle}}%
+          \global\edef\Height{\@nameuse{#1-height}}}}
+
+\def\NormalGerade#1{-- +(\Angle:#1) node {\Bullet} 
+    \NoOb {%
+        \ifnum\Incl>0\relax
+           \pgfmathsetmacro\Xheight{1.02 * \Height}%
+           \global\edef\Height{\Xheight}%
+        \fi
+    }
+}
+%%%
+\def\RKurvePar#1#2#3{\KurvePar{#1}{#2}{#3}{90}}
+\def\LKurvePar#1#2#3{\KurvePar{#1}{-#2}{#3}{-90}}
+\def\KurvePar#1#2#3#4{%
+    % Trick: hide computation in invisible arc
+    \NoOb {%
+        \pgfmathsetmacro\XStartA{\Angle + #4}%
+        \pgfmathsetmacro\XEndA{\Angle +#4 - #2}%
+        \global\edef\StartA{\XStartA}%
+        \global\edef\EndA{\XEndA}%
+        % \typeout{Start \StartA, End \EndA}%
+        % \tiny{#3}%
+    }
+	arc [radius=#1,                % fix
+         start angle=\StartA,      % Angle +  90
+	 	 end angle=\EndA]          % Angle +  60
+         node {\AddToAngle{-#2}\Bullet}
+}
+%%
+%
+%   (O)rigin -------- (S)traight
+%                \
+%                 \
+%                  \
+%                   \ (C)urve
+
+\def\LWeicheParO#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \LKurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1S}%
+   \SavePosAngle{#1C}%
+   \RestPosAngle{#1}%
+   \NormalGerade{18}%
+}
+\def\LWeicheParS#1#2#3#4{%
+   \NormalGerade{18}%
+   \SavePosAngle{#1}%
+   \SavePosAngle{#1S}%
+   \NoOb {\AddToAngle{-180}}
+   \LKurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1C}%
+   \RestPosAngle{#1}%
+}
+\def\LWeicheParC#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \NormalGerade{18}%
+   \SavePosAngle{#1S}%
+   \RestPosAngle{#1}%
+   \LKurvePar{#2}{#3}{#4}{}%
+}
+\def\RWeicheParO#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \RKurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1C}%
+   \RestPosAngle{#1}%
+   \NormalGerade{18}%
+   \SavePosAngle{#1S}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Märklin Gleise
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newwrite\ConfigFile
+\immediate\openout\ConfigFile=\jobname.cfg
+\Config{id=5106,type={Straight},german={Gerade 1/1},english={straight track 1/1},length={18}}
+\Config{id=5107,type={Straight},german={Gerade 1/2},english={straight track 1/2},length={9}}
+\Config{id=5108,type={Straight},german={Gerade 1/4},english={straight track 1/4},length={4.5}}
+\Config{id=5109,type={Straight},german={Gerade 3/16},english={straight track 3/16},length={3.35}}
+\Config{id=5110,type={Straight},german={Gerade 1/8},english={straight track 1/8},length={2.25}}
+\Config{id=5100,type={Curve},german={Normalkreis},english={normal curve},radius={36.0},angle={30}}
+\Config{id=5147,type={Curve},german={Normalkreis},english={normal curve},radius={36.0},angle={15}}
+\Config{id=5200,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={30}}  % ß!
+\Config{id=5205,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={5.7}} % ß!
+\Config{id=5117,type={SwitchL},german={Weiche links},english={track switch left},radius={36.00},angle={30}}
+\Config{id=5118,type={SwitchR},german={Weiche rechts},english={track switch right},radius={36.00},angle={30}}
+\Config{id=5202,type={SwitchL},german={Weiche},english={track switch},radius={43.74},angle={24.3}}
+\immediate\closeout\ConfigFile
+\input{\jobname.cfg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+\begin{tikzpicture}[scale=0.060]
+	\coordinate (lu) at (0,0);                      % Raum links
+	\coordinate (lo) at (0,\Raumlaenge);            % Raum links
+	\coordinate (ro) at (\Raumbreite,\Raumlaenge);  % Raum rechts
+	\coordinate (ru) at (\Raumbreite,0);            % Raum rechts
+	\coordinate (cu) at (120.5,\Raumlaenge);
+	
+	% \draw [name path=raum] \DebugCoord(lu) -- (lo)  -- (ro) -- \DebugCoord(ru) -- cycle;
+	\draw ($(cu) + (0,10)$) node {Eisenbahn -- Otterswang};
+
+	\draw [name path=anlage] (lu) -- (lo)  -- (ro) -- (ru) 
+		-- ($(ru) - (100, 0)$) 
+		-- ($(ru) - (100,-300)$) 
+		-- ($(lu) - (-100,-300)$) 
+		-- ($(lu) + (100,0)$) -- cycle ;
+
+    \coordinate (Start) at (56,390);
+	\draw (Start)
+       \Gerade{5106} \Gerade{5106} 
+       \LWeiche[W3][S]{5202} 
+       \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RKurve{5200} \RKurve{5200} \RKurve{5200}
+       \Gerade{5109} % Korrektur 1
+       \Up
+       \Rep{16}{\Gerade{5106}}
+       \Gerade{5107}
+       \Rep{6}{\RKurve{5200}}
+       \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RKurve{5200} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \LKurve{5100} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \LKurve{5100} \LKurve{5100} \LKurve{5100} 
+       \Gerade{5106} \Gerade{5107} \Gerade{5106} 
+       \LKurve{5100} \LKurve{5100} \LKurve{5100} 
+       \Gerade{5106} 
+       \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5107} \Gerade{5106}
+       \RKurve{5200} \RKurve{5200} \RKurve{5200} \RKurve{5200} \RKurve{5200} \RKurve{5200}
+       \Gerade{5106} \Gerade{5106} \Gerade{5107} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} 
+       \Gerade{5110} % Korrektur 1
+       \RKurve{5200} \RKurve{5200} \RKurve{5200} \Gerade{5108}
+			 % -- cycle
+  ;
+
+  \def\Angle{00}
+	\draw ($(Start) - (0,7.74)$)
+       \Gerade{5106} \LWeiche[W1][O]{5202}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \RKurve{5100} \RKurve{5100} \RKurve{5100} 
+       \Gerade{5109} % Korrektur 1
+       \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5107} \Gerade{5106} \RKurve{5100} \RKurve{5100} \RKurve{5100} \RKurve{5100}
+       \RKurve{5100} \RKurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \RKurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \LKurve{5200} \Gerade{5106} \Gerade{5106} \Gerade{5106} \LKurve{5200} \LKurve{5200}
+       \LKurve{5200} 
+       \Gerade{5106} \Gerade{5106} \Gerade{5107} \LKurve{5200} \LKurve{5200}
+       \LKurve{5200} 
+       % \Gerade{5106} 
+       \RWeiche[W5][O]{5118}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5107} \Gerade{5106} \Gerade{5106} \RKurve{5100} \RKurve{5100} \RKurve{5100}
+       \RKurve{5100} \RKurve{5100} \RKurve{5100} \Gerade{5106} \Gerade{5107}
+       % \Gerade{5106}
+       \RWeiche[W2][O]{5118}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} 
+       \Gerade{5110} % Korrektur 1
+       \RKurve{5100} \RKurve{5100} \RKurve{5100} \Gerade{5108}
+			 % -- cycle
+	;
+
+    % \draw (W1) node {Weiche};
+   \RestPosAngle{W2C}
+   \draw (W2C)
+        \Gerade{5106} 
+        \Gerade{5106} 
+        \LWeiche[W4][C]{5202} 
+        \Gerade{5106} 
+        \Gerade{5106} 
+        \LKurve{5205}
+        \Rep{3}{\Gerade{5106}}
+        ;
+
+   \RestPosAngle{W4S}
+   \draw (W4S)
+        \Gerade{5106} 
+        \Gerade{5106} 
+        \Gerade{5107} 
+        \Gerade{5109} 
+        \Gerade{5109} 
+        \LKurve{5100} 
+        \Gerade{5106} 
+        \Gerade{5106} 
+        \Gerade{5108} 
+        \Gerade{5109} 
+        \Gerade{5109} 
+        \Gerade{5109} 
+        \Gerade{5109} 
+        ;
+
+   \RestPosAngle{W5C}
+   \draw (W5C)
+        \LKurve{5100} 
+        ;
+\end{tikzpicture}
+\end{center}
+
+\newpage
+\textbf{Gleisbedarf}
+
+\def\GleisAnzahlTab#1{ #1 & \@nameuse{D#1}       & \@nameuse{Dim#1} & \@nameuse{N#1}}
+\begin{tabular}{llcr}
+  Nummer & Beschreibung & Länge / Winkel & Anzahl \\
+  \hline
+  \GleisAnzahlTab{5106} \\
+  \GleisAnzahlTab{5107} \\
+  \GleisAnzahlTab{5108} \\
+  \GleisAnzahlTab{5109} \\
+  \GleisAnzahlTab{5110} \\
+  % 5106  & \@nameuse{D5106}       & 180   mm & \@nameuse{N5106} \\
+  % 5106  & Gerade 1/1             & 180   mm & \@nameuse{N5106} \\
+  % 5107  & Gerade 1/2             &  90   mm & \@nameuse{N5107} \\
+  % 5108  & Gerade 1/4             &  45   mm & \@nameuse{N5108} \\
+  % 5109  & Gerade 3/16            &  33,5 mm & \@nameuse{N5107} \\
+  % 5110  & Gerade 1/8             &  22,5 mm & \@nameuse{N5108} \\
+  \GleisAnzahlTab{5100} \\
+  \GleisAnzahlTab{5147} \\
+  \GleisAnzahlTab{5200} \\
+  \GleisAnzahlTab{5205} \\
+  \GleisAnzahlTab{5117} \\
+  \GleisAnzahlTab{5118} \\
+  \GleisAnzahlTab{5202} \\
+  % 5100  & Normalkreis 360 mm     & 30       & \@nameuse{N5100} \\
+  % 5147  & Normalkreis 360 mm     & 15       & \@nameuse{N5147} \\
+  % 5200  & Parallelkreis 437,4 mm & 30       & \@nameuse{N5200} \\
+  % 5205  & Parallelkreis 437,4 mm & 5.7      & \@nameuse{N5205} \\
+  % 5117  & Weiche Normalkreis     & 30       & \@nameuse{N5117} \\
+  % 5118  & Weiche Normalkreis     & 30       & \@nameuse{N5118} \\
+  % 5202  & Weiche                 & 24,3     & \@nameuse{N5202} \\
+  \hline
+\end{tabular}
+
+Raum: 
+
+Winkel Dach 82 Grad
+
+Breite Raum 370
+
+Raum Länge 440
+
+Tür 70
+
+Strom: 80 vom Glas, 100 vom Dach
+
+Gleise 5106: 150
+
+Gleise 5107: 8 
+
+Gleise 5100: 80
+
+Gleise 5200: 37
+
+Gleise 5120: 15
+
+3 Dreiwegweichen
+
+2 Bogenweichen links lang
+
+1 Bogenweichen rechts lang
+
+2 Kreuzungsweichen 5207
+
+1 5203 L
+
+1 512RL X
+
+6 5119 R
+
+1 5118 L
+
+4 5204 R
+
+3 5118 L
+
+5 Prellböcke
+
+\url{http://www.drahtkupplung.de/gtbhb2427.html}
+
+\newpage
+\includegraphics[angle=90,width=1.0\linewidth,page=4]{0700.pdf} \\
+
+\includegraphics[angle=90,width=1.0\linewidth,page=5]{0700.pdf} \\
+
+\includegraphics[angle=90,width=1.0\linewidth,page=6]{0700.pdf} \\
+
+\includegraphics[angle=90,width=1.0\linewidth,page=7]{0700.pdf} \\
+% \includegraphics[width=\linewidth,page=8]{0700.pdf}
+% \newpage
+% \layout
+\end{document}
