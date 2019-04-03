@@ -184,10 +184,20 @@
    \LKurvePar{#2}{#3}{#4}{}%
 }
 \def\RWeicheParS#1#2#3#4{%
-   fehlt
+   \NormalGerade{18}%
+   \SavePosAngle{#1S}%
+   \NoOb {\AddToAngle{-180}}
+   \RKurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1C}%
+   \RestPosAngle{#1S}%
 }
 \def\RWeicheParC#1#2#3#4{%
-   fehlt
+   \SavePosAngle{#1}%
+   \RKurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1C}%
+   \RestPosAngle{#1}%
+   \NormalGerade{18}%
+   \SavePosAngle{#1S}%
 }
 \def\RWeicheParO#1#2#3#4{%
    \SavePosAngle{#1}%
@@ -211,8 +221,13 @@
 \Config{id=5147,type={Curve},german={Normalkreis},english={normal curve},radius={36.0},angle={15}}
 \Config{id=5200,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={30}}  % ß!
 \Config{id=5205,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={5.7}} % ß!
+%%%%%%%%%%
 \Config{id=5117,type={SwitchL},german={Weiche links},english={track switch left},radius={36.00},angle={30}}
 \Config{id=5118,type={SwitchR},german={Weiche rechts},english={track switch right},radius={36.00},angle={30}}
+\Config{id=5141,type={SwitchL},german={Bogenweiche links},english={curved track switch left},
+        radius={36.00},angle={30}}
+\Config{id=5142,type={SwitchR},german={Bogenweiche rechts},english={curved track switch right},
+        radius={36.00},angle={30}}
 \Config{id=5202,type={SwitchL},german={Weiche},english={track switch},radius={43.74},angle={24.3}}
 \immediate\closeout\ConfigFile
 \input{\jobname.cfg}
@@ -310,6 +325,21 @@
         \Gerade{5106} 
         \LKurve{5205}
         \Rep{3}{\Gerade{5106}}
+        \LWeiche[W6][C]{5202} 
+        \RWeiche[W7][O]{5118}
+        \Gerade{5106} 
+        \RKurve{5100}
+        \Gerade{5106} 
+        \RKurve{5100}
+        \RWeiche[W8][C]{5118} 
+        \Gerade{5106} 
+        ;
+
+   \RestPosAngle{W7C}
+        \Rep{3}{\Gerade{5106}}
+        \Gerade{5106} 
+        \RKurve{5100}
+        +(0,0) node {hier}
         ;
 
    \RestPosAngle{W4S}
