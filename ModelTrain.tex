@@ -1,3 +1,6 @@
+% turnout - Weiche
+% three-way turnout
+% 
 \documentclass{article}
 \usepackage[a4paper]{geometry}
 \usepackage[german]{babel}
@@ -19,20 +22,19 @@
 % \usepackage{sverb}
 % \usepackage{math}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{layout}
-\makeatletter
-\renewcommand*{\lay@value}[2]{\strip@pt\dimexpr0.351459\dimexpr\csname#2\endcsname\relax\relax mm}
-\makeatother
+% \usepackage{layout}
+% \makeatletter
+% \renewcommand*{\lay@value}[2]{\strip@pt\dimexpr0.351459\dimexpr\csname#2\endcsname\relax\relax mm}
+% \makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\DebugNode#1{node {#1}}
-\def\DebugCoord(#1){(#1) node {#1}}
-\def\DebugNode#1{}
-\def\DebugCoord(#1){(#1)}
-
 \def\Raumlaenge{400}
 \def\Raumbreite{250}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
+\def\DebugNode#1{node {#1}}
+\def\DebugCoord(#1){(#1) node {#1}}
+\def\DebugNode#1{}
+\def\DebugCoord(#1){(#1)}
 
 \def\@namegedef#1{\global\expandafter\edef\csname #1\endcsname}
 
@@ -62,10 +64,7 @@
    \@namegedef{N#1}{\the\@tempcnta}\relax
 }
 
-\def\Bullet{%
-   \pgfmathsetmacro\XAngle{\Angle + 90}%
-   \rotatebox{\XAngle}{\tiny{|}}%
-}
+\def\Bullet{\pgfmathsetmacro\XAngle{\Angle + 90}\rotatebox{\XAngle}{\tiny{|}}}
 
 \def\Rep#1{\foreach \i in {1,2,...,#1}}
 
@@ -75,7 +74,6 @@
 \def\LWeiche[#1][#2]#3{\@nameuse{L#2#3}{#1}\NoOb{\StepGleis{#3}}}
 \def\RWeiche[#1][#2]#3{\@nameuse{R#2#3}{#1}\NoOb{\StepGleis{#3}}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pgfkeys{%
   /conf/.is family,%
@@ -103,9 +101,7 @@
   \immediate\write\ConfigFile{\string\@namedef{D\Id}{\string\ifcurrentbaselanguage{English}{\English}{\German}}\relax} 
   \immediate\write\ConfigFile{\string\@nameuse{Def\Type}{\Id}{\ConfLength}{\ConfRadius}{\ConfAngle}\relax}\relax
 }
-\def\DefStraight#1#2#3#4{\global\@namedef{G#1}{\NormalGerade{#2}}\relax% 
-    % \typeout{NormalGerade G#1 #2}%
-}
+\def\DefStraight#1#2#3#4{\global\@namedef{G#1}{\NormalGerade{#2}}\relax}
 \def\DefCurve#1#2#3#4{\global\@namedef{R#1}{\RKurvePar{#3}{#4}{#1}}\global\@namedef{L#1}{\LKurvePar{#3}{#4}{#1}}}
 \def\DefSwitchL#1#2#3#4{%
     \@namedef{LO#1}##1{\LWeicheParO{##1}{#3}{#4}{#1}}%
@@ -146,7 +142,6 @@
         \pgfmathsetmacro\XEndA{\Angle +#4 - #2}%
         \global\edef\StartA{\XStartA}%
         \global\edef\EndA{\XEndA}%
-        % \typeout{Start \StartA, End \EndA}%
         % \tiny{#3}%
     }
 	arc [radius=#1,                % fix
@@ -154,13 +149,15 @@
 	 	 end angle=\EndA]          % Angle +  60
          node {\AddToAngle{-#2}\Bullet}
 }
-%%
-%
-%   (O)rigin -------- (S)traight
-%                \
-%                 \
-%                  \
-%                   \ (C)urve
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                              
+%   (O)rigin -------- (S)traight                       / (C)urve
+%                \                                    /                                      
+%                 \                                  /                                        
+%                  \                                /                                         
+%                   \ (C)urve            (O)rigin -------- (S)traight                   
+%                                                                              
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\LWeicheParO#1#2#3#4{%
    \SavePosAngle{#1}%
@@ -185,6 +182,12 @@
    \SavePosAngle{#1S}%
    \RestPosAngle{#1}%
    \LKurvePar{#2}{#3}{#4}{}%
+}
+\def\RWeicheParS#1#2#3#4{%
+   fehlt
+}
+\def\RWeicheParC#1#2#3#4{%
+   fehlt
 }
 \def\RWeicheParO#1#2#3#4{%
    \SavePosAngle{#1}%
@@ -415,13 +418,13 @@ Gleise 5120: 15
 \url{http://www.drahtkupplung.de/gtbhb2427.html}
 
 \newpage
-\includegraphics[angle=90,width=1.0\linewidth,page=4]{0700.pdf} \\
-
-\includegraphics[angle=90,width=1.0\linewidth,page=5]{0700.pdf} \\
-
-\includegraphics[angle=90,width=1.0\linewidth,page=6]{0700.pdf} \\
-
-\includegraphics[angle=90,width=1.0\linewidth,page=7]{0700.pdf} \\
+% \includegraphics[angle=90,width=1.0\linewidth,page=4]{0700.pdf} \\
+% 
+% \includegraphics[angle=90,width=1.0\linewidth,page=5]{0700.pdf} \\
+% 
+% \includegraphics[angle=90,width=1.0\linewidth,page=6]{0700.pdf} \\
+% 
+% \includegraphics[angle=90,width=1.0\linewidth,page=7]{0700.pdf} \\
 % \includegraphics[width=\linewidth,page=8]{0700.pdf}
 % \newpage
 % \layout
