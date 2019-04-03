@@ -174,12 +174,12 @@
    \RestPosAngle{#1S}%
 }
 \def\RWeicheParC#1#2#3#4{%
-   \SavePosAngle{#1}%
-   \RKurvePar{#2}{#3}{#4}{}%
-   \SavePosAngle{#1C}%
-   \RestPosAngle{#1}%
+   \LKurvePar{#2}{#3}{#4}{}%  % R curve!
+   \SavePosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}
    \NormalGerade{18}%
    \SavePosAngle{#1S}%
+   \RestPosAngle{#1O}%
 }
 \def\RWeicheParO#1#2#3#4{%
    \SavePosAngle{#1}%

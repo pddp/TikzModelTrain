@@ -1,3 +1,4 @@
+%%%%%%%%%%%%%%%%%%%%%
 % turnout - Weiche
 % three-way turnout
 % 
@@ -52,6 +53,57 @@ This code produces the layout as shown in \figurename~\ref{f:example1}.
 \end{figure}
 
 In the following we will extend this picture. We will only show the code for the tikz picture.
+We add two switches, one to the left, one to the right.
+As these switches have three ends, we need to specify which end to connect to the current track.
+The three ends are named O (for origin), S (for straight), and C (for curve, either to the left or
+to the right).
+These ends of the switches are marked in \figurename~\ref{f:example2}; 
+this also shows that we can mix track layout code and tikz code freely.
+
+\begin{verbwrite}{example2}
+\documentclass{standalone}
+\usepackage{modeltrain}
+\begin{document}
+\begin{tikzpicture}[scale=0.06]
+  \draw (0,0) -- (100,0) -- (100,85) -- (0,85) -- cycle; %% frame
+
+  \draw (40,05)    % start layouting tracks here
+    \Gerade{5106}  % start with a straight track
+    \Rep{3}{\LKurve{5100}} % 6 curves
+    -- +(0,0) node {O}
+    \LWeiche[W1][C]{5117}
+    -- +(0,0) node {C}
+    \LKurve{5100} % 6 curves
+    \LKurve{5100} % 6 curves
+    \Gerade{5106}  % start with a straight track
+    \LKurve{5100} % 6 curves
+    \LKurve{5100} % 6 curves
+    -- +(0,0) node {C}
+    \RWeiche[W2][C]{5118}
+    -- +(0,0) node {O}
+    \Rep{3}{\LKurve{5100}} % simpler, than syntax above: 6 curves
+    ;
+
+    \draw (W2S) 
+       -- +(0,0) node {S}
+       ;
+    
+    \RestPosAngle{W1S}
+    \draw (W1S) 
+       -- +(0,0) node {S}
+      \LKurve{5100}  % start with a straight track
+      \LKurve{5100}  % start with a straight track
+      \LKurve{5100}  % start with a straight track
+      \Gerade{5106}  % start with a straight track
+      \LKurve{5100}  % start with a straight track
+      \LKurve{5100}  % start with a straight track
+      \LKurve{5100}  % start with a straight track
+      ;
+     
+\end{tikzpicture}
+\end{document}
+\end{document}
+\end{verbwrite}
 
 \end{document}
 
