@@ -3,21 +3,60 @@
 % 
 \documentclass{article}
 \usepackage[a4paper]{geometry}
-\geometry{hoffset=-1cm,marginparwidth=0cm,textwidth=17cm,textheight=252mm}
 \usepackage[german]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{modeltrain}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \usepackage{layout}
-% \makeatletter
-% \renewcommand*{\lay@value}[2]{\strip@pt\dimexpr0.351459\dimexpr\csname#2\endcsname\relax\relax mm}
-% \makeatother
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{sverb}
+\usepackage{listings}
+\author{Dietrich Paulus}
+\title{ModelTrain}
+\date{Vers. 0.1 \\ \today}
 \def\Raumlaenge{400}
 \def\Raumbreite{250}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
-\thispagestyle{empty}
+
+\maketitle
+
+We start with a small complete example, as shown in the following:
+
+\begin{verbwrite}{example1}
+\documentclass{standalone}
+\usepackage{modeltrain}
+\begin{document}
+\begin{tikzpicture}[scale=0.06]
+  \draw (0,0) -- (100,0) -- (100,85) -- (0,85) -- cycle; %% frame
+
+  \draw (40,05)    % start layouting tracks here
+    \Gerade{5106}  % start with a straight track
+    \LKurve{5100}  % 6 curves
+    \LKurve{5100}
+    \LKurve{5100}
+    \LKurve{5100}
+    \LKurve{5100}
+    \LKurve{5100}
+    \Gerade{5106}  % one straight track
+    \Rep{6}{\LKurve{5100}} % simpler, than syntax above: 6 curves
+    ;
+\end{tikzpicture}
+\end{document}
+\end{verbwrite}
+
+\centerline{\fbox{\lstinputlisting{example1}}}
+
+This code produces the layout as shown in \figurename~\ref{f:example1}.
+
+\begin{figure}
+  \centerline{\IfFileExists{example1.pdf}{\includegraphics[width=0.7\linewidth]{example1.pdf}}{file missing}}
+  \caption{Example 1}\label{f:example1}
+\end{figure}
+
+In the following we will extend this picture. We will only show the code for the tikz picture.
+
+\end{document}
+
+
+
 \begin{center}
 \begin{tikzpicture}[scale=0.060]
 	\coordinate (lu) at (0,0);                      % Raum links
