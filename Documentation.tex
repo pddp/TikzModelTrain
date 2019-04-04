@@ -30,14 +30,14 @@ We start with a small complete example, as shown in the following:
 
   \draw (40,05)    % start layouting tracks here
     \Gerade{5106}  % start with a straight track
-    \LKurve{5100}  % 6 curves
-    \LKurve{5100}
-    \LKurve{5100}
-    \LKurve{5100}
-    \LKurve{5100}
-    \LKurve{5100}
+    \LCurve{5100}  % 6 curves
+    \LCurve{5100}
+    \LCurve{5100}
+    \LCurve{5100}
+    \LCurve{5100}
+    \LCurve{5100}
     \Gerade{5106}  % one straight track
-    \Rep{6}{\LKurve{5100}} % simpler, than syntax above: 6 curves
+    \Rep{6}{\LCurve{5100}} % simpler, than syntax above: 6 curves
     ;
 \end{tikzpicture}
 \end{document}
@@ -71,19 +71,19 @@ this also shows that we can mix track layout code and tikz code freely.
 
   \draw (40,05)    % start layouting tracks here
     \Gerade{5106}  % start with a straight track
-    \Rep{3}{\LKurve{5100}} % 6 curves
+    \Rep{3}{\LCurve{5100}} % 6 curves
     -- +(0,0) node {O}
     \LWeiche[W1][C]{5117}
     -- +(0,0) node {C}
-    \LKurve{5100} % 6 curves
-    \LKurve{5100} % 6 curves
+    \LCurve{5100} % 6 curves
+    \LCurve{5100} % 6 curves
     \Gerade{5106} % start with a straight track
-    \LKurve{5100} % 6 curves
-    \LKurve{5100} % 6 curves
+    \LCurve{5100} % 6 curves
+    \LCurve{5100} % 6 curves
     -- +(0,0) node {C}
     \RWeiche[W2][C]{5118}
     -- +(0,0) node {O}
-    \Rep{3}{\LKurve{5100}} % simpler, than syntax above: 6 curves
+    \Rep{3}{\LCurve{5100}} % simpler, than syntax above: 6 curves
     ;
 
     \draw (W2S) -- +(0,0) node {S} ;
@@ -91,13 +91,13 @@ this also shows that we can mix track layout code and tikz code freely.
     \RestPosAngle{W1S}  % Restore settings at label W1 direction S
     \draw (W1S)         % Start drawing at this position
        -- +(0,0) node {S}
-      \LKurve{5100}  
-      \LKurve{5100}  
-      \LKurve{5100}  
+      \LCurve{5100}  
+      \LCurve{5100}  
+      \LCurve{5100}  
       \Gerade{5106}  
-      \LKurve{5100}  
-      \LKurve{5100}  
-      \LKurve{5100}  
+      \LCurve{5100}  
+      \LCurve{5100}  
+      \LCurve{5100}  
       ;
      
 \end{tikzpicture}
@@ -127,40 +127,41 @@ We do this using the following code:
   \draw (0,0) -- (130,0) -- (130,115) -- (0,115) -- cycle; %% frame
 
   \draw (46,12) coordinate (Start)    % start layouting tracks here
-    \Gerade{5106}  % start with a straight track
-    % \Gerade{5106}  
-    \LWeiche[W3][S]{5202} 
-    \Rep{3}{\LKurve{5100}} % 6 curves
+    \Gerade{5106}               % start with a straight track
+    \LWeiche[W2][S]{5202L}
+    \Rep{3}{\LCurve{5100}}      % 6 curves
     \LWeiche[W1][C]{5117}
-    \LKurve{5100} \LKurve{5100} % 2 curves
-    \Gerade{5106}  
-    \Gerade{5106}  
-    \LKurve{5100} \LKurve{5100} % 2 curves
-    \RWeiche[W2][C]{5118}
-    \Rep{3}{\LKurve{5100}} 
+    \LCurve{5100} \LCurve{5100} % 2 curves
+    \Gerade{5106}
+    \Gerade{5106}
+    \LCurve{5100} \LCurve{5100} % 2 curves
+    \RWeiche[W3][C]{5118}
+    \Rep{3}{\LCurve{5100}}
     ;
 
     \RestPosAngle{W1S}
-    \draw (W1S) 
-    \Rep{3}{\LKurve{5100}}
-    \Gerade{5106}  
-    \Gerade{5106}  
-    \Rep{3}{\LKurve{5100}}
+    \draw (W1S)
+    \Rep{3}{\LCurve{5100}}
+    % \RWeiche[W6][O]{5118}
+    \RWeiche[W6][O]{5202R}
+    \Gerade{5106}
+    % \Gerade{5106}
+    \Rep{3}{\LCurve{5100}}
     ;
 
   \def\Angle{0} % start horizontally
   \draw ($(Start) - (0,7.74)$)    % start layouting second track
-    \LWeiche[W3][O]{5202} 
-    \Gerade{5106}  
-    % \Gerade{5106}  
-    \Rep{3}{\LKurve{5200}} % 3 curves
-    \Gerade{5106}  
-    \Rep{3}{\LKurve{5200}} % 3 curves
-    \Gerade{5106}  
-    \Gerade{5106}  
-    \Rep{3}{\LKurve{5200}} % 3 curves
-    \Gerade{5106}  
-    \Rep{3}{\LKurve{5200}} % 3 curves
+    \LWeiche[W7][O]{5202L}
+    \Gerade{5106}
+    \Rep{3}{\LCurve{5200}} % 3 curves
+    \Gerade{5106}
+    \Rep{3}{\LCurve{5200}} % 3 curves
+    \Gerade{5106}
+    % \Gerade{5106}
+    \RWeiche[W8][S]{5202R}
+    \Rep{3}{\LCurve{5200}} % 3 curves
+    \Gerade{5106}
+    \Rep{3}{\LCurve{5200}} % 3 curves
     ;
 
 \end{tikzpicture}
@@ -191,62 +192,62 @@ We do this using the following code:
     \coordinate (Start) at (56,390);
 	\draw (Start)
        \Gerade{5106} \Gerade{5106} 
-       \LWeiche[W3][S]{5202} 
+       \LWeiche[W3][S]{5202L} 
        \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RKurve{5200} \RKurve{5200} \RKurve{5200}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RCurve{5200} \RCurve{5200} \RCurve{5200}
        \Gerade{5109} % Korrektur 1
        \Up
        \Rep{16}{\Gerade{5106}}
        \Gerade{5107}
-       \Rep{6}{\RKurve{5200}}
+       \Rep{6}{\RCurve{5200}}
        \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RKurve{5200} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \LKurve{5100} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \LKurve{5100} \LKurve{5100} \LKurve{5100} 
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RCurve{5200} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \Gerade{5106} \Gerade{5106} \LCurve{5100} \Gerade{5106} \Gerade{5106}
+       \Gerade{5106} \LCurve{5100} \LCurve{5100} \LCurve{5100} 
        \Gerade{5106} \Gerade{5107} \Gerade{5106} 
-       \LKurve{5100} \LKurve{5100} \LKurve{5100} 
+       \LCurve{5100} \LCurve{5100} \LCurve{5100} 
        \Gerade{5106} 
        \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5107} \Gerade{5106}
-       \RKurve{5200} \RKurve{5200} \RKurve{5200} \RKurve{5200} \RKurve{5200} \RKurve{5200}
+       \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200}
        \Gerade{5106} \Gerade{5106} \Gerade{5107} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} 
        \Gerade{5110} % Korrektur 1
-       \RKurve{5200} \RKurve{5200} \RKurve{5200} \Gerade{5108}
+       \RCurve{5200} \RCurve{5200} \RCurve{5200} \Gerade{5108}
 			 % -- cycle
   ;
 
   \def\Angle{00}
 	\draw ($(Start) - (0,7.74)$)
-       \Gerade{5106} \LWeiche[W1][O]{5202}
+       \Gerade{5106} \LWeiche[W1][O]{5202L}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \RKurve{5100} \RKurve{5100} \RKurve{5100} 
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} 
        \Gerade{5109} % Korrektur 1
        \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5107} \Gerade{5106} \RKurve{5100} \RKurve{5100} \RKurve{5100} \RKurve{5100}
-       \RKurve{5100} \RKurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \RKurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \LKurve{5200} \Gerade{5106} \Gerade{5106} \Gerade{5106} \LKurve{5200} \LKurve{5200}
-       \LKurve{5200} 
-       \Gerade{5106} \Gerade{5106} \Gerade{5107} \LKurve{5200} \LKurve{5200}
-       \LKurve{5200} 
+       \Gerade{5107} \Gerade{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} \RCurve{5100}
+       \RCurve{5100} \RCurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \RCurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \LCurve{5200} \Gerade{5106} \Gerade{5106} \Gerade{5106} \LCurve{5200} \LCurve{5200}
+       \LCurve{5200} 
+       \Gerade{5106} \Gerade{5106} \Gerade{5107} \LCurve{5200} \LCurve{5200}
+       \LCurve{5200} 
        % \Gerade{5106} 
        \RWeiche[W5][O]{5118}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5107} \Gerade{5106} \Gerade{5106} \RKurve{5100} \RKurve{5100} \RKurve{5100}
-       \RKurve{5100} \RKurve{5100} \RKurve{5100} \Gerade{5106} \Gerade{5107}
+       \Gerade{5107} \Gerade{5106} \Gerade{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100}
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Gerade{5106} \Gerade{5107}
        % \Gerade{5106}
        \RWeiche[W2][O]{5118}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
        \Gerade{5106} \Gerade{5106} 
        \Gerade{5110} % Korrektur 1
-       \RKurve{5100} \RKurve{5100} \RKurve{5100} \Gerade{5108}
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Gerade{5108}
 			 % -- cycle
 	;
 
@@ -255,17 +256,17 @@ We do this using the following code:
    \draw (W2C)
         \Gerade{5106} 
         \Gerade{5106} 
-        \LWeiche[W4][C]{5202} 
+        \LWeiche[W4][C]{5202L} 
         \Gerade{5106} 
         \Gerade{5106} 
-        \LKurve{5205}
+        \LCurve{5205}
         \Rep{3}{\Gerade{5106}}
-        \LWeiche[W6][C]{5202} 
+        \LWeiche[W6][C]{5202L} 
         \RWeiche[W7][O]{5118}
         \Gerade{5106} 
-        \RKurve{5100}
+        \RCurve{5100}
         \Gerade{5106} 
-        \RKurve{5100}
+        \RCurve{5100}
         \RWeiche[W8][C]{5118} 
         \Gerade{5106} 
         ;
@@ -273,7 +274,7 @@ We do this using the following code:
    \RestPosAngle{W7C}
         \Rep{3}{\Gerade{5106}}
         \Gerade{5106} 
-        \RKurve{5100}
+        \RCurve{5100}
         +(0,0) node {hier}
         ;
 
@@ -284,7 +285,7 @@ We do this using the following code:
         \Gerade{5107} 
         \Gerade{5109} 
         \Gerade{5109} 
-        \LKurve{5100} 
+        \LCurve{5100} 
         \Gerade{5106} 
         \Gerade{5106} 
         \Gerade{5108} 
@@ -296,7 +297,7 @@ We do this using the following code:
 
    \RestPosAngle{W5C}
    \draw (W5C)
-        \LKurve{5100} 
+        \LCurve{5100} 
         ;
 \end{tikzpicture}
 \end{center}
@@ -326,7 +327,7 @@ We do this using the following code:
   \GleisAnzahlTab{5205} \\
   \GleisAnzahlTab{5117} \\
   \GleisAnzahlTab{5118} \\
-  \GleisAnzahlTab{5202} \\
+  \GleisAnzahlTab{5202L} \\
   % 5100  & Normalkreis 360 mm     & 30       & \@nameuse{N5100} \\
   % 5147  & Normalkreis 360 mm     & 15       & \@nameuse{N5147} \\
   % 5200  & Parallelkreis 437,4 mm & 30       & \@nameuse{N5200} \\

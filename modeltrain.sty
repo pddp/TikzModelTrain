@@ -50,8 +50,8 @@
 \def\Rep#1{\foreach \i in {1,2,...,#1}}
 
 \def\Gerade#1{\@nameuse{G#1}\NoOb{\StepGleis{#1}}}
-\def\LKurve#1{\@nameuse{L#1}\NoOb{\StepGleis{#1}}}
-\def\RKurve#1{\@nameuse{R#1}\NoOb{\StepGleis{#1}}}
+\def\LCurve#1{\@nameuse{L#1}\NoOb{\StepGleis{#1}}}
+\def\RCurve#1{\@nameuse{R#1}\NoOb{\StepGleis{#1}}}
 \def\LWeiche[#1][#2]#3{\@nameuse{L#2#3}{#1}\NoOb{\StepGleis{#3}}}
 \def\RWeiche[#1][#2]#3{\@nameuse{R#2#3}{#1}\NoOb{\StepGleis{#3}}}
 
@@ -83,7 +83,7 @@
   \immediate\write\ConfigFile{\string\global\string\@nameuse{Def\Type}{\Id}{\ConfLength}{\ConfRadius}{\ConfAngle}\relax}\relax
 }
 \def\DefStraight#1#2#3#4{\global\@namedef{G#1}{\NormalGerade{#2}}\relax}
-\def\DefCurve#1#2#3#4{\global\@namedef{R#1}{\RKurvePar{#3}{#4}{#1}}\global\@namedef{L#1}{\LKurvePar{#3}{#4}{#1}}}
+\def\DefCurve#1#2#3#4{\global\@namedef{R#1}{\RCurvePar{#3}{#4}{#1}}\global\@namedef{L#1}{\LCurvePar{#3}{#4}{#1}}}
 \def\DefSwitchL#1#2#3#4{%
     \global\@namedef{LO#1}##1{\LWeicheParO{##1}{#3}{#4}{#1}}%
     \global\@namedef{LS#1}##1{\LWeicheParS{##1}{#3}{#4}{#1}}%
@@ -114,9 +114,9 @@
     }%
 }
 %%%
-\def\RKurvePar#1#2#3{\KurvePar{#1}{#2}{#3}{90}}
-\def\LKurvePar#1#2#3{\KurvePar{#1}{-#2}{#3}{-90}}
-\def\KurvePar#1#2#3#4{%
+\def\RCurvePar#1#2#3{\CurvePar{#1}{#2}{#3}{90}}
+\def\LCurvePar#1#2#3{\CurvePar{#1}{-#2}{#3}{-90}}
+\def\CurvePar#1#2#3#4{%
     % Trick: hide computation in invisible arc
     \NoOb {%
         \pgfmathsetmacro\XStartA{\Angle + #4}%
@@ -142,7 +142,7 @@
 
 \def\LWeicheParO#1#2#3#4{%
    \SavePosAngle{#1}%
-   \LKurvePar{#2}{#3}{#4}{}%
+   \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1S}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
@@ -153,7 +153,7 @@
    \SavePosAngle{#1}%
    \SavePosAngle{#1S}%
    \NoOb {\AddToAngle{-180}}%
-   \LKurvePar{#2}{#3}{#4}{}%
+   \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
 }
@@ -162,18 +162,18 @@
    \NormalGerade{18}%
    \SavePosAngle{#1S}%
    \RestPosAngle{#1}%
-   \LKurvePar{#2}{#3}{#4}{}%
+   \LCurvePar{#2}{#3}{#4}{}%
 }
 \def\RWeicheParS#1#2#3#4{%
    \NormalGerade{18}%
    \SavePosAngle{#1S}%
    \NoOb {\AddToAngle{-180}}%
-   \RKurvePar{#2}{#3}{#4}{}%
+   \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1S}%
 }
 \def\RWeicheParC#1#2#3#4{%
-   \LKurvePar{#2}{#3}{#4}{}%  % R curve!
+   \LCurvePar{#2}{#3}{#4}{}%  % R curve!
    \SavePosAngle{#1O}%
    \NoOb {\AddToAngle{-180}}%
    \NormalGerade{18}%
@@ -182,7 +182,7 @@
 }
 \def\RWeicheParO#1#2#3#4{%
    \SavePosAngle{#1}%
-   \RKurvePar{#2}{#3}{#4}{}%
+   \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
    \NormalGerade{18}%
@@ -216,5 +216,6 @@
         radius={36.00},angle={30}}
 \Config{id=5142,type={SwitchR},german={Bogenweiche rechts},english={curved track switch right},
         radius={36.00},angle={30}}
-\Config{id=5202,type={SwitchL},german={Weiche},english={track switch},radius={43.74},angle={24.3}}
+\Config{id=5202L,type={SwitchL},german={Weiche links},english={track switch left},radius={43.74},angle={24.3}}
+\Config{id=5202R,type={SwitchR},german={Weiche rechts},english={track switch right},radius={43.74},angle={24.3}}
 \end{ConfigSection}
