@@ -42,6 +42,8 @@ What is the idea behind the following package?
   \item Programming the layout should be done with \LaTeX\ and Tikz.
 \end{itemize}
 
+\section{Examples}
+
 Currently, the package supports only planar layouts. 
 Inclinations etc.\ are planned.
 The typical steps are as follows:
@@ -158,7 +160,7 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
 We now add a second parallel track as shown in \figurename~\ref{f:example3}.
 We do this using the following code:
 
-\Example{example3}{1}{131}{Two oval connected by switches}
+\Example{example3}{7}{41}{Two oval connected by switches}
 
 \begin{figure}
   \centerline{\IfFileExists{example3.pdf}{\includegraphics[width=0.7\linewidth]{example3.pdf}}{file missing}}
@@ -210,6 +212,184 @@ We do this using the following code:
 \end{document}
 \end{verbwrite}
 
+A quite complex example is given in Lst.\ref{ex:example4}
+The result is shown in \figurename~\ref{f:example4}.
+
+\begin{verbwrite}{example4}
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\pagestyle{empty}
+\usepackage{modeltrain}
+\def\Raumlaenge{400}
+\def\Raumbreite{250}
+\begin{document}
+\begin{tikzpicture}[scale=0.040]
+	\coordinate (lu) at (0,0);                      % Raum links
+	\coordinate (lo) at (0,\Raumlaenge);            % Raum links
+	\coordinate (ro) at (\Raumbreite,\Raumlaenge);  % Raum rechts
+	\coordinate (ru) at (\Raumbreite,0);            % Raum rechts
+	\coordinate (cu) at (120.5,\Raumlaenge);
+	
+	% \draw [name path=raum] \DebugCoord(lu) -- (lo)  -- (ro) -- \DebugCoord(ru) -- cycle;
+	\draw ($(cu) + (0,10)$) node {Eisenbahn -- Otterswang};
+
+	\draw [name path=anlage] (lu) -- (lo)  -- (ro) -- (ru) 
+		-- ($(ru) - (100, 0)$) 
+		-- ($(ru) - (100,-300)$) 
+		-- ($(lu) - (-100,-300)$) 
+		-- ($(lu) + (100,0)$) -- cycle ;
+
+    \coordinate (Start) at (56,390);
+	\draw (Start)
+       \Straight{5106} \Straight{5106} 
+       \LSwitch[W3][S]{5202L} 
+       \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \RCurve{5200} \RCurve{5200} \RCurve{5200}
+       \Straight{5109} % Korrektur 1
+       \Up
+       \Rep{16}{\Straight{5106}}
+       \Straight{5107}
+       \Rep{6}{\RCurve{5200}}
+       \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \RCurve{5200} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \LCurve{5100} \Straight{5106} \Straight{5106}
+       \Straight{5106} \LCurve{5100} \LCurve{5100} \LCurve{5100} 
+       \Straight{5106} \Straight{5107} \Straight{5106} 
+       \LCurve{5100} \LCurve{5100} \LCurve{5100} 
+       \Straight{5106} 
+       \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106}
+       \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200}
+       \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
+       \Straight{5110} % Korrektur 1
+       \RCurve{5200} \RCurve{5200} \RCurve{5200} \Straight{5108}
+			 % -- cycle
+  ;
+
+  \def\Angle{00}
+	\draw ($(Start) - (0,7.74)$)
+       \Straight{5106} \LSwitch[W1][O]{5202L}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} 
+       \Straight{5109} % Korrektur 1
+       \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5107} \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} \RCurve{5100}
+       \RCurve{5100} \RCurve{5100} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \RCurve{5100} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \LCurve{5200} \Straight{5106} \Straight{5106} \Straight{5106} \LCurve{5200} \LCurve{5200}
+       \LCurve{5200} 
+       \Straight{5106} \Straight{5106} \Straight{5107} \LCurve{5200} \LCurve{5200}
+       \LCurve{5200} 
+       % \Straight{5106} 
+       \RSwitch[W5][O]{5118}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5107} \Straight{5106} \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100}
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Straight{5106} \Straight{5107}
+       % \Straight{5106}
+       \RSwitch[W2][O]{5118}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} 
+       \Straight{5110} % Korrektur 1
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Straight{5108}
+			 % -- cycle
+	;
+
+    % \draw (W1) node {Switch};
+   \RestPosAngle{W2C}
+   \draw (W2C)
+        \Straight{5106} 
+        \Straight{5106} 
+        \LSwitch[W4][C]{5202L} 
+        \Straight{5106} 
+        \Straight{5106} 
+        \LCurve{5205}
+        \Rep{3}{\Straight{5106}}
+        \LSwitch[W6][C]{5202L} 
+        \RSwitch[W7][O]{5118}
+        \Straight{5106} 
+        \RCurve{5100}
+        \Straight{5106} 
+        \RCurve{5100}
+        \RSwitch[W8][C]{5118} 
+        \Straight{5106} 
+        ;
+
+   \RestPosAngle{W7C}
+        \Rep{3}{\Straight{5106}}
+        \Straight{5106} 
+        \RCurve{5100}
+        +(0,0) node {hier}
+        ;
+
+   \RestPosAngle{W4S}
+   \draw (W4S)
+        \Straight{5106} 
+        \Straight{5106} 
+        \Straight{5107} 
+        \Straight{5109} 
+        \Straight{5109} 
+        \LCurve{5100} 
+        \Straight{5106} 
+        \Straight{5106} 
+        \Straight{5108} 
+        \Straight{5109} 
+        \Straight{5109} 
+        \Straight{5109} 
+        \Straight{5109} 
+        ;
+
+   \RestPosAngle{W5C}
+   \draw (W5C)
+        \LCurve{5100} 
+        ;
+\end{tikzpicture}
+\newpage
+\TrackUse
+\end{document}
+\end{verbwrite}
+
+\Example{example4}{1}{241}{Complex example}
+
+\begin{figure}
+  \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=1,width=0.7\linewidth]{example4.pdf}}{file missing}}
+  \caption{Example 4}\label{f:example4}
+\end{figure}
+
+There is also a macro that tells you the tracks that are used in a layout.
+This is also used in Lst~\ref{ex:example4} and the table is shown 
+\figurename~\ref{tab:example4}.
+% For the layout in \figurename~\ref{f:example4} this results in a table that is shown 
+% in \tablename~\ref{t:example4}.
+% 
+% \begin{table}
+%   \centerline{\TrackUse}
+%   \caption{Tracks used in \figurename~\ref{f:example4}}
+% \end{table}
+\begin{figure}
+  \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=2,width=0.7\linewidth]{example4.pdf}}{file missing}}
+  \caption{Tracks used in Example 4}\label{tab:example4}
+\end{figure}
+
+\section{Known Problems}
+
+\begin{itemize}
+  \item Error handling is poor.
+  \item Switches have mandatory arguments with syntax for optional arguments.
+     The reason is, that these arguments will become optional eventually.
+  \item More documentation required.
+  \item Up to now, only planar layout
+  \item Track types missing for Märklin (X-switch, 3 way turnover, ...)
+  \item Support for other manufactureres missing (Fleischmann, Arno, ...)
+  \item Configuration section currently writes definition to auxiliary file, as I did not get
+      the \TeX\ expansion of the macros right -- should be solved more elegantly
+\end{itemize}
 \end{document}
 
 

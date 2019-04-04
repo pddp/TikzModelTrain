@@ -150,39 +150,8 @@
 
 \newpage
 \makeatletter
-\textbf{Gleisbedarf}
 
-\def\GleisAnzahlTab#1{ #1 & \@nameuse{D#1}       & \@nameuse{Dim#1} & \@nameuse{N#1}}
-\begin{tabular}{llcr}
-  Nummer & Beschreibung & Länge / Winkel & Anzahl \\
-  \hline
-  \GleisAnzahlTab{5106} \\
-  \GleisAnzahlTab{5107} \\
-  \GleisAnzahlTab{5108} \\
-  \GleisAnzahlTab{5109} \\
-  \GleisAnzahlTab{5110} \\
-  % 5106  & \@nameuse{D5106}       & 180   mm & \@nameuse{N5106} \\
-  % 5106  & Straight 1/1             & 180   mm & \@nameuse{N5106} \\
-  % 5107  & Straight 1/2             &  90   mm & \@nameuse{N5107} \\
-  % 5108  & Straight 1/4             &  45   mm & \@nameuse{N5108} \\
-  % 5109  & Straight 3/16            &  33,5 mm & \@nameuse{N5107} \\
-  % 5110  & Straight 1/8             &  22,5 mm & \@nameuse{N5108} \\
-  \GleisAnzahlTab{5100} \\
-  \GleisAnzahlTab{5147} \\
-  \GleisAnzahlTab{5200} \\
-  \GleisAnzahlTab{5205} \\
-  \GleisAnzahlTab{5117} \\
-  \GleisAnzahlTab{5118} \\
-  \GleisAnzahlTab{5202L} \\
-  % 5100  & Normalkreis 360 mm     & 30       & \@nameuse{N5100} \\
-  % 5147  & Normalkreis 360 mm     & 15       & \@nameuse{N5147} \\
-  % 5200  & Parallelkreis 437,4 mm & 30       & \@nameuse{N5200} \\
-  % 5205  & Parallelkreis 437,4 mm & 5.7      & \@nameuse{N5205} \\
-  % 5117  & Switch Normalkreis     & 30       & \@nameuse{N5117} \\
-  % 5118  & Switch Normalkreis     & 30       & \@nameuse{N5118} \\
-  % 5202  & Switch                 & 24,3     & \@nameuse{N5202} \\
-  \hline
-\end{tabular}
+\TrackUse
 
 Raum: 
 
