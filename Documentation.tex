@@ -114,9 +114,6 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
 
 
 \begin{verbwrite}{example2}
-% \documentclass{standalone}
-% \usepackage{modeltrain}
-% \begin{document}
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
 
@@ -147,14 +144,12 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
        \Rep{3}{\LCurve{5100}}
       ;
 \end{tikzpicture}
-% \end{document}
 \end{verbwrite}
 
 \Example{example2}{7}{33}{Oval with two switches}
 
 \def\Angle{0}
 \begin{figure}
-  % \centerline{\IfFileExists{example2.pdf}{\includegraphics[width=0.7\linewidth]{example2.pdf}}{file missing}}
   \input{example2}
   \caption{Example 2}\label{f:example2}
 \end{figure}
@@ -162,11 +157,7 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
 We now add a second parallel track as shown in \figurename~\ref{f:example3}.
 We do this using the following code:
 
-
 \begin{verbwrite}{example3}
-% \documentclass{standalone}
-% \usepackage{modeltrain}
-% \begin{document}
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (130,0) -- (130,115) -- (0,115) -- cycle; %% frame
 
@@ -205,14 +196,12 @@ We do this using the following code:
     \Rep{3}{\LCurve{5200}} % 3 curves
     ;
 \end{tikzpicture}
-% \end{document}
 \end{verbwrite}
 
 \Example{example3}{7}{41}{Two oval connected by switches}
 
 \def\Angle{0}
 \begin{figure}
-  % \centerline{\IfFileExists{example3.pdf}{\includegraphics[width=0.7\linewidth]{example3.pdf}}{file missing}}
   \input{example3}
   \caption{Example 3}\label{f:example3}
 \end{figure}
@@ -224,13 +213,8 @@ The result is shown in \figurename~\ref{f:example4}.
 \input{\jobname.cfg}
 
 \begin{verbwrite}{example4}
-% \documentclass{article}
-% \usepackage[a4paper]{geometry}
-% \pagestyle{empty}
-% \usepackage{modeltrain}
 \def\RoomLength{400}
 \def\RoomWidth{250}
-% \begin{document}
 \begin{tikzpicture}[scale=0.040]
 	\coordinate (lu) at (0,0);                     % room left
 	\coordinate (lo) at (0,\RoomLength);           % room left
@@ -344,15 +328,11 @@ The result is shown in \figurename~\ref{f:example4}.
         \LCurve{5100} 
         ;
 \end{tikzpicture}
-% \newpage
-% \TrackUse
-% \end{document}
 \end{verbwrite}
 
 \Example{example4}{1}{241}{Complex example}
 
 \begin{figure}
-  % \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=1,width=0.7\linewidth]{example4.pdf}}{file missing}}
   \input{example4}
   \caption{Example 4}\label{f:example4}
 \end{figure}
@@ -387,6 +367,7 @@ in \tablename~\ref{t:example4}.
       the \TeX\ expansion of the macros right -- should be solved more elegantly
   % \item Table of track pieces (e.g. \tablename~\ref{t:example4} should be multilingual
   % done
+  \item Table of track pieces needs to depend on track type list in configuration section
   \item Style should have options (see comments in .sty file)
 \end{itemize}
 \end{document}
