@@ -1,18 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% should have options
+% - maerklin / fleischmann / ... for the track manufacturers
+% - german, english, ... for the language
+% - ticks / bullets for the end of tracks
+% - names (name pieces)
+%%
+% One should also be able to change these options by some \set... command
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{translations}  % tests for language base
 \usepackage{calc}
 \usepackage{ifthen} 
 \usepackage{pgfkeys} 
-\usepackage{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{math,calc,intersections}
 \usepackage{ifthen}
 \usepackage{graphicx}
 \parindent=0pt
 \parskip=1ex
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \usepackage{etoolbox} 
-% \usepackage{sverb}
-% \usepackage{math}
 \makeatletter
 \def\DebugNode#1{node {#1}}
 \def\DebugCoord(#1){(#1) node {#1}}
