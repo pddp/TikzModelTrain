@@ -112,12 +112,11 @@ Each of these switches will have an open end when I lay the first loop.
 
 Then we continue at the open end of W1 to connect it to the open end of W2.
 
-\Example{example2}{7}{33}{Oval with two switches}
 
 \begin{verbwrite}{example2}
-\documentclass{standalone}
-\usepackage{modeltrain}
-\begin{document}
+% \documentclass{standalone}
+% \usepackage{modeltrain}
+% \begin{document}
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
 
@@ -147,30 +146,27 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
        \Straight{5106}  
        \Rep{3}{\LCurve{5100}}
       ;
-     
 \end{tikzpicture}
-\end{document}
+% \end{document}
 \end{verbwrite}
 
+\Example{example2}{7}{33}{Oval with two switches}
+
+\def\Angle{0}
 \begin{figure}
-  \centerline{\IfFileExists{example2.pdf}{\includegraphics[width=0.7\linewidth]{example2.pdf}}{file missing}}
+  % \centerline{\IfFileExists{example2.pdf}{\includegraphics[width=0.7\linewidth]{example2.pdf}}{file missing}}
+  \input{example2}
   \caption{Example 2}\label{f:example2}
 \end{figure}
 
 We now add a second parallel track as shown in \figurename~\ref{f:example3}.
 We do this using the following code:
 
-\Example{example3}{7}{41}{Two oval connected by switches}
-
-\begin{figure}
-  \centerline{\IfFileExists{example3.pdf}{\includegraphics[width=0.7\linewidth]{example3.pdf}}{file missing}}
-  \caption{Example 3}\label{f:example3}
-\end{figure}
 
 \begin{verbwrite}{example3}
-\documentclass{standalone}
-\usepackage{modeltrain}
-\begin{document}
+% \documentclass{standalone}
+% \usepackage{modeltrain}
+% \begin{document}
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (130,0) -- (130,115) -- (0,115) -- cycle; %% frame
 
@@ -209,20 +205,32 @@ We do this using the following code:
     \Rep{3}{\LCurve{5200}} % 3 curves
     ;
 \end{tikzpicture}
-\end{document}
+% \end{document}
 \end{verbwrite}
+
+\Example{example3}{7}{41}{Two oval connected by switches}
+
+\def\Angle{0}
+\begin{figure}
+  % \centerline{\IfFileExists{example3.pdf}{\includegraphics[width=0.7\linewidth]{example3.pdf}}{file missing}}
+  \input{example3}
+  \caption{Example 3}\label{f:example3}
+\end{figure}
 
 A quite complex example is given in Lst.\ref{ex:example4}
 The result is shown in \figurename~\ref{f:example4}.
 
+% Reset all counters
+\input{\jobname.cfg}
+
 \begin{verbwrite}{example4}
-\documentclass{article}
-\usepackage[a4paper]{geometry}
-\pagestyle{empty}
-\usepackage{modeltrain}
+% \documentclass{article}
+% \usepackage[a4paper]{geometry}
+% \pagestyle{empty}
+% \usepackage{modeltrain}
 \def\RoomLength{400}
 \def\RoomWidth{250}
-\begin{document}
+% \begin{document}
 \begin{tikzpicture}[scale=0.040]
 	\coordinate (lu) at (0,0);                     % room left
 	\coordinate (lo) at (0,\RoomLength);           % room left
@@ -336,32 +344,34 @@ The result is shown in \figurename~\ref{f:example4}.
         \LCurve{5100} 
         ;
 \end{tikzpicture}
-\newpage
-\TrackUse
-\end{document}
+% \newpage
+% \TrackUse
+% \end{document}
 \end{verbwrite}
 
 \Example{example4}{1}{241}{Complex example}
 
 \begin{figure}
-  \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=1,width=0.7\linewidth]{example4.pdf}}{file missing}}
+  % \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=1,width=0.7\linewidth]{example4.pdf}}{file missing}}
+  \input{example4}
   \caption{Example 4}\label{f:example4}
 \end{figure}
 
 There is also a macro that tells you the tracks that are used in a layout.
-This is also used in Lst~\ref{ex:example4} and the table is shown 
-\figurename~\ref{tab:example4}.
-% For the layout in \figurename~\ref{f:example4} this results in a table that is shown 
-% in \tablename~\ref{t:example4}.
+% This is also used in Lst~\ref{ex:example4} and the table is shown 
+% \figurename~\ref{tab:example4}.
+For the layout in \figurename~\ref{f:example4} this results in a table that is shown 
+in \tablename~\ref{t:example4}.
 % 
-% \begin{table}
-%   \centerline{\TrackUse}
-%   \caption{Tracks used in \figurename~\ref{f:example4}}
-% \end{table}
-\begin{figure}
-  \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=2,width=0.7\linewidth]{example4.pdf}}{file missing}}
-  \caption{Tracks used in Example 4}\label{tab:example4}
-\end{figure}
+\begin{table}
+   \centerline{\TrackUse}
+   \caption{Tracks used in \figurename~\ref{f:example4}}
+   \label{t:example4}
+\end{table}
+% \begin{figure}
+% \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=2,width=0.7\linewidth]{example4.pdf}}{file missing}}
+%  \caption{Tracks used in Example 4}\label{tab:example4}
+% \end{figure}
 
 \section{Known Problems}
 
@@ -375,7 +385,8 @@ This is also used in Lst~\ref{ex:example4} and the table is shown
   \item Support for other manufactureres missing (Fleischmann, Arno, ...)
   \item Configuration section currently writes definition to auxiliary file, as I did not get
       the \TeX\ expansion of the macros right -- should be solved more elegantly
-  \item Table of track pieces should be multilingual
+  % \item Table of track pieces (e.g. \tablename~\ref{t:example4} should be multilingual
+  % done
   \item Style should have options (see comments in .sty file)
 \end{itemize}
 \end{document}

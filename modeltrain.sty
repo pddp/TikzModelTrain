@@ -75,6 +75,14 @@
   angle/.initial = {0},%
   radius/.initial = {0},%
 }
+\newcommand{\MultiLang}[1]{%
+  \pgfkeys{/conf, 
+    #1,
+    german/.get=\German,
+    english/.get=\English,
+  }%
+  \ifcurrentbaselanguage{English}{\English}{\German}\relax
+}
 \newcommand{\Config}[1]{%
   \pgfkeys{/conf, 
     #1,
@@ -233,22 +241,22 @@
 \end{ConfigSection}
 
 \def\GleisAnzahlTab#1{ #1 & \@nameuse{D#1}       & \@nameuse{Dim#1} & \@nameuse{N#1}}
-\def\TrackUse{%
-\textbf{Gleisbedarf} \newline
+%%%%%%%%%%%%%%
+% Needs to be programmed depending on the ConfigSection -- to be done
+%%%%%%%%%%%%%%
+\long\def\TrackUse{%
 \begin{tabular}{llcr}
-  Nummer & Beschreibung & Länge / Winkel & Anzahl \\
+  % should be multilingual
+  \MultiLang{german=Id,english=Id} & 
+  \MultiLang{german=Beschreibung,english=Description} & 
+  \MultiLang{german={Länge/Winkel},english={Length / Angle}} & 
+  \MultiLang{german={Anzahl},english={Count}} \\
   \hline
   \GleisAnzahlTab{5106} \\
   \GleisAnzahlTab{5107} \\
   \GleisAnzahlTab{5108} \\
   \GleisAnzahlTab{5109} \\
   \GleisAnzahlTab{5110} \\
-  % 5106  & \@nameuse{D5106}       & 180   mm & \@nameuse{N5106} \\
-  % 5106  & Straight 1/1             & 180   mm & \@nameuse{N5106} \\
-  % 5107  & Straight 1/2             &  90   mm & \@nameuse{N5107} \\
-  % 5108  & Straight 1/4             &  45   mm & \@nameuse{N5108} \\
-  % 5109  & Straight 3/16            &  33,5 mm & \@nameuse{N5107} \\
-  % 5110  & Straight 1/8             &  22,5 mm & \@nameuse{N5108} \\
   \GleisAnzahlTab{5100} \\
   \GleisAnzahlTab{5147} \\
   \GleisAnzahlTab{5200} \\
