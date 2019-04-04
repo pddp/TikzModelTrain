@@ -19,7 +19,31 @@
 
 \maketitle
 
-We start with a small complete example, as shown in the following:
+What is the idea behind the following package?
+\begin{itemize}
+  \item I want to create a track layout for a model train.
+  \item I program the layout in a sequence of steps; these steps
+     correspond to the steps that I would do in reality with real (model) tracks.
+  \item Programming the layout should be done with \LaTeX\ and Tikz.
+\end{itemize}
+
+Currently, the package supports only planar layouts. 
+Inclinations etc.\ are planned.
+The typical steps are as follows:
+\begin{enumerate}
+  \item We select a plane size and shape on which we want to lay the tracks.
+     (We do this as a polygon in Tikz).
+  \item We select a starting point for the tracks in Tikz coordinates.
+  \item From the starting point on we lay tacks and connect them sequentially.
+  \item We select tracks of the following types:
+     \begin{enumerate}
+       \item straight tracks (of varying length)
+       \item curved tracks (of varying angle and radius)
+       \item switches (of different types)
+     \end{enumerate}
+\end{enumerate}
+
+We start with a small complete example without switches, as shown in the following:
 
 \begin{verbwrite}{example1}
 \documentclass{standalone}
@@ -59,6 +83,10 @@ The three ends are named O (for origin), S (for straight), and C (for curve, eit
 to the right).
 These ends of the switches are marked in \figurename~\ref{f:example2}; 
 this also shows that we can mix track layout code and tikz code freely.
+When we add a switch, we also give that piece a name; in the following example we have switches W1 and W2.
+Each of these switches will have an open end when I lay the first loop.
+
+Then we continue at the open end of W1 to connect it to the open end of W2.
 
 \centerline{\fbox{\lstinputlisting{example2}}}
 
@@ -69,35 +97,31 @@ this also shows that we can mix track layout code and tikz code freely.
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
 
-  \draw (40,05)    % start layouting tracks here
-    \Gerade{5106}  % start with a straight track
+  \draw (40,05)            % start layouting tracks here
+    \Gerade{5106}          % start with a straight track
     \Rep{3}{\LCurve{5100}} % 6 curves
     -- +(0,0) node {O}
-    \LWeiche[W1][C]{5117}
+    \LWeiche[W1][C]{5117}  % Switch named W1
     -- +(0,0) node {C}
-    \LCurve{5100} % 6 curves
-    \LCurve{5100} % 6 curves
-    \Gerade{5106} % start with a straight track
-    \LCurve{5100} % 6 curves
-    \LCurve{5100} % 6 curves
+    \LCurve{5100}          
+    \LCurve{5100} 
+    \Gerade{5106} 
+    \LCurve{5100} 
+    \LCurve{5100} 
     -- +(0,0) node {C}
-    \RWeiche[W2][C]{5118}
+    \RWeiche[W2][C]{5118} % Switch named W2
     -- +(0,0) node {O}
-    \Rep{3}{\LCurve{5100}} % simpler, than syntax above: 6 curves
+    \Rep{3}{\LCurve{5100}} 
     ;
 
     \draw (W2S) -- +(0,0) node {S} ;
     
     \RestPosAngle{W1S}  % Restore settings at label W1 direction S
-    \draw (W1S)         % Start drawing at this position
+    \draw (W1S)         % Start drawing at this position (open end of W1)
        -- +(0,0) node {S}
-      \LCurve{5100}  
-      \LCurve{5100}  
-      \LCurve{5100}  
-      \Gerade{5106}  
-      \LCurve{5100}  
-      \LCurve{5100}  
-      \LCurve{5100}  
+       \Rep{3}{\LCurve{5100}}
+       \Gerade{5106}  
+       \Rep{3}{\LCurve{5100}}
       ;
      
 \end{tikzpicture}
@@ -142,28 +166,24 @@ We do this using the following code:
     \RestPosAngle{W1S}
     \draw (W1S)
     \Rep{3}{\LCurve{5100}}
-    % \RWeiche[W6][O]{5118}
     \RWeiche[W6][O]{5202R}
     \Gerade{5106}
-    % \Gerade{5106}
     \Rep{3}{\LCurve{5100}}
     ;
 
   \def\Angle{0} % start horizontally
-  \draw ($(Start) - (0,7.74)$)    % start layouting second track
+  \draw ($(Start) - (0,7.74)$) % relative to Start, we lay a second loop
     \LWeiche[W7][O]{5202L}
     \Gerade{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
     \Gerade{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
     \Gerade{5106}
-    % \Gerade{5106}
     \RWeiche[W8][S]{5202R}
     \Rep{3}{\LCurve{5200}} % 3 curves
     \Gerade{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
     ;
-
 \end{tikzpicture}
 \end{document}
 \end{verbwrite}
