@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%
-% turnout - Weiche
+% turnout - Switch
 % three-way turnout
 % 
 \documentclass{article}
@@ -7,13 +7,28 @@
 \usepackage[american]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{modeltrain}
+\usepackage{pgffor}
 \usepackage{sverb}
 \usepackage{listings}
+\lstset{language=TeX,mathescape=true,frame=Trbl,numbers=left}
 \author{Dietrich Paulus}
 \title{ModelTrain}
 \date{Vers. 0.1 \\ \today}
 \def\Raumlaenge{400}
 \def\Raumbreite{250}
+\def\Example#1#2#3#4{%
+ \lstinputlisting[% float,%
+ 	firstline=#2,%
+ 	lastline=#3,%
+	firstnumber=#2,%
+ 	% frame=\frame,%
+ 	% index=\INDEXWORDS,%
+	basicstyle=\ttfamily\small,%
+	keywordstyle=\ttfamily\small,%
+	commentstyle=\rm,%
+	label=ex:#1,%
+	caption={#4}]{#1}%
+}
 
 \begin{document}
 
@@ -43,6 +58,11 @@ The typical steps are as follows:
      \end{enumerate}
 \end{enumerate}
 
+For Märklin, the following track names are admissible:
+% \makeatletter
+\foreach \i in \TrackNameList{\i, }
+For curves we need to use either \texttt{LCurve} or \texttt{RCurve} to indicate the direction.
+
 We start with a small complete example without switches, as shown in the following:
 
 \begin{verbwrite}{example1}
@@ -53,23 +73,25 @@ We start with a small complete example without switches, as shown in the followi
   \draw (0,0) -- (100,0) -- (100,85) -- (0,85) -- cycle; %% frame
 
   \draw (40,05)    % start layouting tracks here
-    \Gerade{5106}  % start with a straight track
+    \Straight{5106}  % start with a straight track
     \LCurve{5100}  % 6 curves
     \LCurve{5100}
     \LCurve{5100}
     \LCurve{5100}
     \LCurve{5100}
     \LCurve{5100}
-    \Gerade{5106}  % one straight track
-    \Rep{6}{\LCurve{5100}} % simpler, than syntax above: 6 curves
+    \Straight{5106}  % one straight track
+    \Rep{6}{\LCurve{5100}} % simpler, than syntax above: 6 curves $\mbox{\label{l:rep}}$
     ;
 \end{tikzpicture}
 \end{document}
 \end{verbwrite}
 
-\centerline{\fbox{\lstinputlisting{example1}}}
+\Example{example1}{1}{100}{Simple oval}
 
-This code produces the layout as shown in \figurename~\ref{f:example1}.
+This code produces the layout as shown in \figurename~\ref{ex:example1}.
+As we can see in line \ref{l:rep}, we can use a macro $\texttt{Rep}$ to lay a number of
+tracks instead of repeating them explicitly.
 
 \begin{figure}
   \centerline{\IfFileExists{example1.pdf}{\includegraphics[width=0.7\linewidth]{example1.pdf}}{file missing}}
@@ -81,14 +103,14 @@ We add two switches, one to the left, one to the right.
 As these switches have three ends, we need to specify which end to connect to the current track.
 The three ends are named O (for origin), S (for straight), and C (for curve, either to the left or
 to the right).
-These ends of the switches are marked in \figurename~\ref{f:example2}; 
+These ends of the switches are marked in \figurename~\ref{ex:example2}; 
 this also shows that we can mix track layout code and tikz code freely.
 When we add a switch, we also give that piece a name; in the following example we have switches W1 and W2.
 Each of these switches will have an open end when I lay the first loop.
 
 Then we continue at the open end of W1 to connect it to the open end of W2.
 
-\centerline{\fbox{\lstinputlisting{example2}}}
+\Example{example2}{7}{33}{Oval with two switches}
 
 \begin{verbwrite}{example2}
 \documentclass{standalone}
@@ -98,18 +120,18 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
   \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
 
   \draw (40,05)            % start layouting tracks here
-    \Gerade{5106}          % start with a straight track
+    \Straight{5106}          % start with a straight track
     \Rep{3}{\LCurve{5100}} % 6 curves
     -- +(0,0) node {O}
-    \LWeiche[W1][C]{5117}  % Switch named W1
+    \LSwitch[W1][C]{5117}  % Switch named W1
     -- +(0,0) node {C}
     \LCurve{5100}          
     \LCurve{5100} 
-    \Gerade{5106} 
+    \Straight{5106} 
     \LCurve{5100} 
     \LCurve{5100} 
     -- +(0,0) node {C}
-    \RWeiche[W2][C]{5118} % Switch named W2
+    \RSwitch[W2][C]{5118} % Switch named W2
     -- +(0,0) node {O}
     \Rep{3}{\LCurve{5100}} 
     ;
@@ -120,7 +142,7 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
     \draw (W1S)         % Start drawing at this position (open end of W1)
        -- +(0,0) node {S}
        \Rep{3}{\LCurve{5100}}
-       \Gerade{5106}  
+       \Straight{5106}  
        \Rep{3}{\LCurve{5100}}
       ;
      
@@ -136,7 +158,7 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
 We now add a second parallel track as shown in \figurename~\ref{f:example3}.
 We do this using the following code:
 
-\centerline{\fbox{\lstinputlisting{example3}}}
+\Example{example3}{1}{131}{Two oval connected by switches}
 
 \begin{figure}
   \centerline{\IfFileExists{example3.pdf}{\includegraphics[width=0.7\linewidth]{example3.pdf}}{file missing}}
@@ -151,37 +173,37 @@ We do this using the following code:
   \draw (0,0) -- (130,0) -- (130,115) -- (0,115) -- cycle; %% frame
 
   \draw (46,12) coordinate (Start)    % start layouting tracks here
-    \Gerade{5106}               % start with a straight track
-    \LWeiche[W2][S]{5202L}
+    \Straight{5106}               % start with a straight track
+    \LSwitch[W2][S]{5202L}
     \Rep{3}{\LCurve{5100}}      % 6 curves
-    \LWeiche[W1][C]{5117}
+    \LSwitch[W1][C]{5117}
     \LCurve{5100} \LCurve{5100} % 2 curves
-    \Gerade{5106}
-    \Gerade{5106}
+    \Straight{5106}
+    \Straight{5106}
     \LCurve{5100} \LCurve{5100} % 2 curves
-    \RWeiche[W3][C]{5118}
+    \RSwitch[W3][C]{5118}
     \Rep{3}{\LCurve{5100}}
     ;
 
     \RestPosAngle{W1S}
     \draw (W1S)
     \Rep{3}{\LCurve{5100}}
-    \RWeiche[W6][O]{5202R}
-    \Gerade{5106}
+    \RSwitch[W6][O]{5202R}
+    \Straight{5106}
     \Rep{3}{\LCurve{5100}}
     ;
 
   \def\Angle{0} % start horizontally
   \draw ($(Start) - (0,7.74)$) % relative to Start, we lay a second loop
-    \LWeiche[W7][O]{5202L}
-    \Gerade{5106}
+    \LSwitch[W7][O]{5202L}
+    \Straight{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
-    \Gerade{5106}
+    \Straight{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
-    \Gerade{5106}
-    \RWeiche[W8][S]{5202R}
+    \Straight{5106}
+    \RSwitch[W8][S]{5202R}
     \Rep{3}{\LCurve{5200}} % 3 curves
-    \Gerade{5106}
+    \Straight{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
     ;
 \end{tikzpicture}
@@ -211,108 +233,108 @@ We do this using the following code:
 
     \coordinate (Start) at (56,390);
 	\draw (Start)
-       \Gerade{5106} \Gerade{5106} 
-       \LWeiche[W3][S]{5202L} 
-       \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RCurve{5200} \RCurve{5200} \RCurve{5200}
-       \Gerade{5109} % Korrektur 1
+       \Straight{5106} \Straight{5106} 
+       \LSwitch[W3][S]{5202L} 
+       \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \RCurve{5200} \RCurve{5200} \RCurve{5200}
+       \Straight{5109} % Korrektur 1
        \Up
-       \Rep{16}{\Gerade{5106}}
-       \Gerade{5107}
+       \Rep{16}{\Straight{5106}}
+       \Straight{5107}
        \Rep{6}{\RCurve{5200}}
-       \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \RCurve{5200} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \LCurve{5100} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \LCurve{5100} \LCurve{5100} \LCurve{5100} 
-       \Gerade{5106} \Gerade{5107} \Gerade{5106} 
+       \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \RCurve{5200} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \LCurve{5100} \Straight{5106} \Straight{5106}
+       \Straight{5106} \LCurve{5100} \LCurve{5100} \LCurve{5100} 
+       \Straight{5106} \Straight{5107} \Straight{5106} 
        \LCurve{5100} \LCurve{5100} \LCurve{5100} 
-       \Gerade{5106} 
-       \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5107} \Gerade{5106}
+       \Straight{5106} 
+       \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106}
        \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200}
-       \Gerade{5106} \Gerade{5106} \Gerade{5107} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} 
-       \Gerade{5110} % Korrektur 1
-       \RCurve{5200} \RCurve{5200} \RCurve{5200} \Gerade{5108}
+       \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
+       \Straight{5110} % Korrektur 1
+       \RCurve{5200} \RCurve{5200} \RCurve{5200} \Straight{5108}
 			 % -- cycle
   ;
 
   \def\Angle{00}
 	\draw ($(Start) - (0,7.74)$)
-       \Gerade{5106} \LWeiche[W1][O]{5202L}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
+       \Straight{5106} \LSwitch[W1][O]{5202L}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
        \RCurve{5100} \RCurve{5100} \RCurve{5100} 
-       \Gerade{5109} % Korrektur 1
-       \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5107} \Gerade{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} \RCurve{5100}
-       \RCurve{5100} \RCurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \RCurve{5100} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \LCurve{5200} \Gerade{5106} \Gerade{5106} \Gerade{5106} \LCurve{5200} \LCurve{5200}
+       \Straight{5109} % Korrektur 1
+       \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5107} \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} \RCurve{5100}
+       \RCurve{5100} \RCurve{5100} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \RCurve{5100} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \LCurve{5200} \Straight{5106} \Straight{5106} \Straight{5106} \LCurve{5200} \LCurve{5200}
        \LCurve{5200} 
-       \Gerade{5106} \Gerade{5106} \Gerade{5107} \LCurve{5200} \LCurve{5200}
+       \Straight{5106} \Straight{5106} \Straight{5107} \LCurve{5200} \LCurve{5200}
        \LCurve{5200} 
-       % \Gerade{5106} 
-       \RWeiche[W5][O]{5118}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5107} \Gerade{5106} \Gerade{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100}
-       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Gerade{5106} \Gerade{5107}
-       % \Gerade{5106}
-       \RWeiche[W2][O]{5118}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106} \Gerade{5106}
-       \Gerade{5106} \Gerade{5106} 
-       \Gerade{5110} % Korrektur 1
-       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Gerade{5108}
+       % \Straight{5106} 
+       \RSwitch[W5][O]{5118}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5107} \Straight{5106} \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100}
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Straight{5106} \Straight{5107}
+       % \Straight{5106}
+       \RSwitch[W2][O]{5118}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Straight{5106} \Straight{5106} 
+       \Straight{5110} % Korrektur 1
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Straight{5108}
 			 % -- cycle
 	;
 
-    % \draw (W1) node {Weiche};
+    % \draw (W1) node {Switch};
    \RestPosAngle{W2C}
    \draw (W2C)
-        \Gerade{5106} 
-        \Gerade{5106} 
-        \LWeiche[W4][C]{5202L} 
-        \Gerade{5106} 
-        \Gerade{5106} 
+        \Straight{5106} 
+        \Straight{5106} 
+        \LSwitch[W4][C]{5202L} 
+        \Straight{5106} 
+        \Straight{5106} 
         \LCurve{5205}
-        \Rep{3}{\Gerade{5106}}
-        \LWeiche[W6][C]{5202L} 
-        \RWeiche[W7][O]{5118}
-        \Gerade{5106} 
+        \Rep{3}{\Straight{5106}}
+        \LSwitch[W6][C]{5202L} 
+        \RSwitch[W7][O]{5118}
+        \Straight{5106} 
         \RCurve{5100}
-        \Gerade{5106} 
+        \Straight{5106} 
         \RCurve{5100}
-        \RWeiche[W8][C]{5118} 
-        \Gerade{5106} 
+        \RSwitch[W8][C]{5118} 
+        \Straight{5106} 
         ;
 
    \RestPosAngle{W7C}
-        \Rep{3}{\Gerade{5106}}
-        \Gerade{5106} 
+        \Rep{3}{\Straight{5106}}
+        \Straight{5106} 
         \RCurve{5100}
         +(0,0) node {hier}
         ;
 
    \RestPosAngle{W4S}
    \draw (W4S)
-        \Gerade{5106} 
-        \Gerade{5106} 
-        \Gerade{5107} 
-        \Gerade{5109} 
-        \Gerade{5109} 
+        \Straight{5106} 
+        \Straight{5106} 
+        \Straight{5107} 
+        \Straight{5109} 
+        \Straight{5109} 
         \LCurve{5100} 
-        \Gerade{5106} 
-        \Gerade{5106} 
-        \Gerade{5108} 
-        \Gerade{5109} 
-        \Gerade{5109} 
-        \Gerade{5109} 
-        \Gerade{5109} 
+        \Straight{5106} 
+        \Straight{5106} 
+        \Straight{5108} 
+        \Straight{5109} 
+        \Straight{5109} 
+        \Straight{5109} 
+        \Straight{5109} 
         ;
 
    \RestPosAngle{W5C}
@@ -336,11 +358,11 @@ We do this using the following code:
   \GleisAnzahlTab{5109} \\
   \GleisAnzahlTab{5110} \\
   % 5106  & \@nameuse{D5106}       & 180   mm & \@nameuse{N5106} \\
-  % 5106  & Gerade 1/1             & 180   mm & \@nameuse{N5106} \\
-  % 5107  & Gerade 1/2             &  90   mm & \@nameuse{N5107} \\
-  % 5108  & Gerade 1/4             &  45   mm & \@nameuse{N5108} \\
-  % 5109  & Gerade 3/16            &  33,5 mm & \@nameuse{N5107} \\
-  % 5110  & Gerade 1/8             &  22,5 mm & \@nameuse{N5108} \\
+  % 5106  & Straight 1/1             & 180   mm & \@nameuse{N5106} \\
+  % 5107  & Straight 1/2             &  90   mm & \@nameuse{N5107} \\
+  % 5108  & Straight 1/4             &  45   mm & \@nameuse{N5108} \\
+  % 5109  & Straight 3/16            &  33,5 mm & \@nameuse{N5107} \\
+  % 5110  & Straight 1/8             &  22,5 mm & \@nameuse{N5108} \\
   \GleisAnzahlTab{5100} \\
   \GleisAnzahlTab{5147} \\
   \GleisAnzahlTab{5200} \\
@@ -352,9 +374,9 @@ We do this using the following code:
   % 5147  & Normalkreis 360 mm     & 15       & \@nameuse{N5147} \\
   % 5200  & Parallelkreis 437,4 mm & 30       & \@nameuse{N5200} \\
   % 5205  & Parallelkreis 437,4 mm & 5.7      & \@nameuse{N5205} \\
-  % 5117  & Weiche Normalkreis     & 30       & \@nameuse{N5117} \\
-  % 5118  & Weiche Normalkreis     & 30       & \@nameuse{N5118} \\
-  % 5202  & Weiche                 & 24,3     & \@nameuse{N5202} \\
+  % 5117  & Switch Normalkreis     & 30       & \@nameuse{N5117} \\
+  % 5118  & Switch Normalkreis     & 30       & \@nameuse{N5118} \\
+  % 5202  & Switch                 & 24,3     & \@nameuse{N5202} \\
   \hline
 \end{tabular}
 
