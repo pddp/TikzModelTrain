@@ -30,6 +30,9 @@
 	caption={#4}]{#1}%
 }
 
+\parindent=0pt
+\parskip=1ex
+
 \begin{document}
 
 \maketitle
@@ -243,24 +246,20 @@ The result is shown in \figurename~\ref{f:example4}.
        \Rep{16}{\Straight{5106}}
        \Straight{5107}
        \Rep{6}{\RCurve{5200}}
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
+       \Rep{4}{\Straight{5106}}
        \RCurve{5200} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \LCurve{5100} \Straight{5106} \Straight{5106}
-       \Straight{5106} \LCurve{5100} \LCurve{5100} \LCurve{5100} 
+       \Rep{5}{\Straight{5106}}
+       \LCurve{5100} 
+       \Straight{5106} \Straight{5106} \Straight{5106} 
+       \LCurve{5100} \LCurve{5100} \LCurve{5100} 
        \Straight{5106} \Straight{5107} \Straight{5106} 
        \LCurve{5100} \LCurve{5100} \LCurve{5100} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
+       \Rep{12}{\Straight{5106}}
        \Straight{5107} \Straight{5106} 
        \RCurve{5200} \RCurve{5200} \RCurve{5200} \RCurve{5200} 
        \RCurve{5200} \RCurve{5200}
-       \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5110} % small correction
+       \Rep{16}{\Straight{5106}}
+       \Straight{5107} \Straight{5110} % small correction
        \RCurve{5200} \RCurve{5200} \RCurve{5200} \Straight{5108}
 			 % -- cycle
   ;
@@ -271,11 +270,8 @@ The result is shown in \figurename~\ref{f:example4}.
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
        \Straight{5106} \Straight{5106} \RCurve{5100} \RCurve{5100} 
        \RCurve{5100} \Straight{5109} % correction
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5107} 
-       \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} 
+       \Rep{16}{\Straight{5106}}
+       \Straight{5107} \RCurve{5100} \RCurve{5100} \RCurve{5100} 
        \RCurve{5100} \RCurve{5100} \RCurve{5100} 
        \Rep{4}{\Straight{5106}}
        \RCurve{5100} \Straight{5106} 
@@ -286,15 +282,11 @@ The result is shown in \figurename~\ref{f:example4}.
        \LCurve{5200} 
        % \Straight{5106} 
        \RSwitch[W5][O]{5118}
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106} 
-       \Straight{5106} \Rep{6}{\RCurve{5100}}
+       \Rep{12}{\Straight{5106}}
+       \Straight{5107} \Rep{6}{\RCurve{5100}}
        \Straight{5106} \Straight{5107}
        \RSwitch[W2][O]{5118}
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
+       \Rep{12}{\Straight{5106}}
        \Straight{5106} \Straight{5106} 
        \Straight{5110} % Korrektur 1
        \RCurve{5100} \RCurve{5100} \RCurve{5100} \Straight{5108}
