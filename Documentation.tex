@@ -18,9 +18,9 @@
 \def\RoomWidth{250}
 \def\Example#1#2#3#4{%
  \lstinputlisting[% float,%
- 	firstline=#2,%
- 	lastline=#3,%
-	firstnumber=#2,%
+    % firstline=#2,%
+    % lastline=#3,%
+    % firstnumber=#2,%
  	% frame=\frame,%
  	% index=\INDEXWORDS,%
 	basicstyle=\ttfamily\small,%
@@ -96,7 +96,12 @@ As we can see in line \ref{l:rep}, we can use a macro $\texttt{Rep}$ to lay a nu
 tracks instead of repeating them explicitly.
 
 \begin{figure}
-  \centerline{\IfFileExists{example1.pdf}{\includegraphics[width=0.7\linewidth]{example1.pdf}}{file missing}}
+  % \centerline{\IfFileExists{example1.pdf}{\includegraphics[width=0.7\linewidth]{example1.pdf}}{file missing}}
+  \def\documentclass#1{}
+  \def\usepackage#1{}
+  \def\document{}
+  \def\enddocument{}
+  \centerline{\input{example1}}
   \caption{Example 1}\label{f:example1}
 \end{figure}
 
@@ -150,7 +155,7 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
 
 \def\Angle{0}
 \begin{figure}
-  \input{example2}
+  \centerline{\input{example2}}
   \caption{Example 2}\label{f:example2}
 \end{figure}
 
@@ -202,7 +207,7 @@ We do this using the following code:
 
 \def\Angle{0}
 \begin{figure}
-  \input{example3}
+  \centerline{\input{example3}}
   \caption{Example 3}\label{f:example3}
 \end{figure}
 
@@ -270,9 +275,10 @@ The result is shown in \figurename~\ref{f:example4}.
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5107} 
-       \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} \RCurve{5100}
-       \RCurve{5100} \RCurve{5100} \Straight{5106} \Straight{5106} 
-       \Straight{5106} \Straight{5106} \RCurve{5100} \Straight{5106} 
+       \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100} 
+       \RCurve{5100} \RCurve{5100} \RCurve{5100} 
+       \Rep{4}{\Straight{5106}}
+       \RCurve{5100} \Straight{5106} 
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
        \LCurve{5200} \Straight{5106} \Straight{5106} \Straight{5106} 
        \LCurve{5200} \LCurve{5200} \LCurve{5200} \Straight{5106} 
@@ -283,9 +289,8 @@ The result is shown in \figurename~\ref{f:example4}.
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106}
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
        \Straight{5106} \Straight{5106} \Straight{5107} \Straight{5106} 
-       \Straight{5106} \RCurve{5100} \RCurve{5100} \RCurve{5100}
-       \RCurve{5100} \RCurve{5100} \RCurve{5100} \Straight{5106} \Straight{5107}
-       % \Straight{5106}
+       \Straight{5106} \Rep{6}{\RCurve{5100}}
+       \Straight{5106} \Straight{5107}
        \RSwitch[W2][O]{5118}
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
@@ -333,7 +338,9 @@ The result is shown in \figurename~\ref{f:example4}.
 \Example{example4}{1}{241}{Complex example}
 
 \begin{figure}
-  \input{example4}
+  \begin{center}
+  {\input{example4}}
+  \end{center}
   \caption{Example 4}\label{f:example4}
 \end{figure}
 
