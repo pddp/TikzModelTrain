@@ -23,6 +23,23 @@
 \parindent=0pt
 \parskip=1ex
 
+\Stock{5106}{150} % o.k. % Gleise 5106: 150
+\Stock{5107}{8}   % o.k. % Gleise 5107: 8 
+\Stock{5100}{80}  % o.k. % Gleise 5100: 80
+\Stock{5200}{37}  % o.k. % Gleise 5200: 37
+\Stock{5120}{15}  % Gleise 5120: 15
+% 3 Dreiwegweichen
+% 2 Bogenweichen links lang
+% 1 Bogenweichen rechts lang
+% 1 512RL X
+\Stock{5207}{2} % % 2 Kreuzungsweichen 5207
+\Stock{5203L}{1} % 1 5203 L
+\Stock{5118 }{1} % 6 5119 R
+\Stock{5119R}{6} % 1 5118 L
+\Stock{5204R}{4} % 4 5204 R
+\Stock{5118L}{3} % 3 5118 L
+% 5 Prellböcke
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \thispagestyle{empty}
@@ -143,7 +160,10 @@
    \def\Angle{0}
    \draw (inner-0)
 			 \Rep{3}{\LCurve{5100}}
-			 \Rep{13}{\Straight{5106}}
+			 \Rep{1}{\Straight{5106}}
+			 \XSwitch[W4][B]{5207}   %% korrigieren
+			 \LSwitch[W5][O]{5202L}
+			 \Rep{10}{\Straight{5106}}
 			 \Rep{5}{\RCurve{5200}}
 			 \Rep{2}{\Straight{5106}}
 			 \Rep{1}{\RCurve{5200}}
@@ -168,7 +188,8 @@
    \def\Angle{0}
    \draw (outer-0)
 			 \Rep{3}{\LCurve{5200}}
-			 \Rep{13}{\Straight{5106}}
+			 \LSwitch[W6][O]{5202L}
+			 \Rep{12}{\Straight{5106}}
 			 \Rep{5}{\RCurve{5100}}
 			 \Rep{2}{\Straight{5106}}
 			 \Rep{1}{\RCurve{5100}}
@@ -189,6 +210,14 @@
 			 \Rep{2}{\Straight{5106}}
 			 ;
 
+   \RestPosAngle{W5C}
+   \draw (W5C)
+			 \Rep{1}{\RCurve{5206}}
+			 \Rep{6}{\Straight{5106}}
+			 \Rep{1}{\LCurve{5100}}
+			 \Rep{1}{\RCurve{5100}}
+			 \Rep{1}{\Straight{5108}}
+			 ;
 \end{tikzpicture}
 \end{center}
 
