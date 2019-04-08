@@ -329,6 +329,10 @@ The result is shown in \figurename~\ref{f:example4}.
 
 \Example{example4}{1}{241}{Complex example}
 
+The tracks are shown in orthogonal projection.
+This means, that tracks that are not flat will be shortened depending
+on the inclination angle.
+
 \begin{figure}
   \begin{center}
   {\input{example4}}
@@ -359,7 +363,8 @@ in \tablename~\ref{t:example4}.
   \item Switches have mandatory arguments with syntax for optional arguments.
      The reason is, that these arguments will become optional eventually.
   \item More documentation required.
-  \item Up to now, only planar layout
+  \item Up to now, inclination is computed only for straight tracks. How should we handle
+      curves?
   \item Track types missing for Märklin (X-switch, 3 way turnover, ...)
   \item Support for other manufactureres missing (Fleischmann, Arno, ...)
   \item Configuration section currently writes definition to auxiliary file, as I did not get
