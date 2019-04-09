@@ -45,10 +45,9 @@ What is the idea behind the following package?
   \item Programming the layout should be done with \LaTeX\ and Tikz.
 \end{itemize}
 
-\section{Examples}
 
-Currently, the package supports only planar layouts. 
-Inclinations etc.\ are planned.
+\section{Strategy}
+
 The typical steps are as follows:
 \begin{enumerate}
   \item We select a plane size and shape on which we want to lay the tracks.
@@ -63,10 +62,23 @@ The typical steps are as follows:
      \end{enumerate}
 \end{enumerate}
 
+\section{Up and Down}
+
+Straight tracks can be inclined.
+\begin{itemize}
+  \item \texttt{Up}\{angle\} will start going uphill; the angle is given in degees,
+  \item \texttt{Down}\{angle\} will start going downhill; the angle is given in degees,
+  \item \texttt{Flat} will lay tracks on the current height.
+\end{itemize}
+
+\section{Track Names}
+
 For Märklin, the following track names are admissible:
 % \makeatletter
 \foreach \i in \TrackNameList{\i, }
 For curves we need to use either \texttt{LCurve} or \texttt{RCurve} to indicate the direction.
+
+\section{Examples}
 
 We start with a small complete example without switches, as shown in the following:
 

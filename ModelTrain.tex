@@ -84,18 +84,19 @@
 
    \RestPosAngle{inner-1}
 	 \draw[color=red] (inner-1)
-        \Up{1.15}
+        \Up{2.00}
 			 \Rep{12}{\Straight{5106}}
 			 \Flat
-			 node [right] {H: \Height}
+			 % node [rotate=90, right] {H: \Height}
 			 \SavePosAngle{inner-2}
 			 ;
    
    \RestPosAngle{outer-1}
    \draw[color=red] (outer-1)
-        \Up{1.15}
+        \Up{2.00}
 			 \Rep{12}{\Straight{5106}}
 			 \Flat
+			 node [rotate=90,above] {H: \Height}
 			 \SavePosAngle{outer-2}
 			 ;
    
@@ -129,7 +130,7 @@
    
    \RestPosAngle{outer-3}
    \draw[color=red] (outer-3)
-   \Down{1.15}
+   \Down{2.15}
 			 \Rep{4}{\Straight{5106}}
 			 \Flat
 			 \SavePosAngle{outer-4}
@@ -138,7 +139,7 @@
 
    \RestPosAngle{inner-3}
    \draw[color=red] (inner-3)
-   \Down{1.15}
+   \Down{2.15}
 			 \Rep{4}{\Straight{5106}}
 			 \Flat
 			 \SavePosAngle{inner-4}
@@ -178,8 +179,10 @@
 			 \Rep{14}{\Straight{5106}}
 			 \Rep{1}{\Straight{5107}}
 			 \Rep{1}{\Straight{5108}}
+			 \Rep{1}{\Straight{5108}}
 			 \Rep{3}{\LCurve{5100}}
 			 \Rep{6}{\Straight{5106}}
+			 \Rep{1}{\Straight{5108}}
 			 \Rep{3}{\LCurve{5100}}
 			 \Rep{2}{\Straight{5106}}
 			 ;
@@ -201,11 +204,13 @@
 			 \Rep{1}{\LCurve{5200}}
 			 \Rep{4}{\Straight{5106}}
 			 \Rep{6}{\LCurve{5200}}
-			 \Rep{14}{\Straight{5106}}
+             \Rep{14}{\Straight{5106}}
 			 \Rep{1}{\Straight{5107}}
+			 \Rep{1}{\Straight{5108}}
 			 \Rep{1}{\Straight{5108}}
 			 \Rep{3}{\LCurve{5200}}
 			 \Rep{6}{\Straight{5106}}
+			 \Rep{1}{\Straight{5108}}
 			 \Rep{3}{\LCurve{5200}}
 			 \Rep{2}{\Straight{5106}}
 			 ;

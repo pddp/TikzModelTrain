@@ -41,19 +41,29 @@
 
 \def\Up#1{\NoOb{%
     \global\def\Incl{1}%
-    \pgfmathsetmacro\XSin{sin(2 * 3.1416 * #1 / 360)}%
-    \pgfmathsetmacro\XCos{cos(2 * 3.1416 * #1 / 360)}%
+    % \pgfmathsetmacro\XRadv{(2.0 * pi * (#1) / 360)}%
+    % \global\edef\XRad{\XRadv}%
+    % \pgfmathsetmacro\XSin{sin(\XRad)}%
+    % \pgfmathsetmacro\XCos{cos(\XRad)}%
+    \pgfmathsetmacro\XSin{sin(#1)}%
+    \pgfmathsetmacro\XCos{cos(#1)}%
     \global\edef\SinIncl{\XSin}%
     \global\edef\CosIncl{\XCos}%
+    \typeout{#1 / sin(#1) = \SinIncl,  cos(#1) = \CosIncl}%
    }%
 }
 \def\Flat{\NoOb{\global\def\Incl{0}\global\def\Inclination{0}}}
 \def\Down#1{\NoOb{%
-    \global\def\Incl{1}%
-    \pgfmathsetmacro\XSin{sin(2 * 3.1416 * #1 / 360)}%
-    \pgfmathsetmacro\XCos{cos(2 * 3.1416 * #1 / 360)}%
+    \global\def\Incl{-1}%
+    % \pgfmathsetmacro\XRadv{(2.0 * pi * (#1) / 360)}%
+    % \global\edef\XRad{\XRadv}%
+    % \pgfmathsetmacro\XSin{sin(\XRad)}%
+    % \pgfmathsetmacro\XCos{cos(\XRad)}%
+    \pgfmathsetmacro\XSin{sin(#1)}%
+    \pgfmathsetmacro\XCos{cos(#1)}%
     \global\edef\SinIncl{\XSin}%
     \global\edef\CosIncl{\XCos}%
+    \typeout{#1 / sin(#1) = \SinIncl,  cos(#1) = \CosIncl}%
    }%
 }
 \def\Color{black}
@@ -158,26 +168,26 @@
 
 \def\RestPosAngle#1{(#1)% 
     \NoOb{\global\edef\Angle{\@nameuse{#1-angle}}%
-          \global\edef\Height{\@nameuse{#1-height}}}}
+          \global\edef\Height{\@nameuse{#1-height}%
+}}}
 
 \def\NormalStraight#1#2{%
     \NoOb {%
         \global\edef\Length{#1}%  % can be changed for inclined tracks
         \ifnum\Incl>0\relax
-           \pgfmathsetmacro\Xheight{\Height + \SinIncl * #1}%  
+           \pgfmathsetmacro\Xheight{\Height + (\SinIncl * #1)}%  
            \global\edef\Height{\Xheight}%
            \pgfmathsetmacro\Xlength{\CosIncl * #1}%
            \global\edef\Length{\Xlength}%  
-           \typeout{Height: \Height, \Xheight}%
+           \typeout{Height: \Height, \Xheight, Length \Length -- #1}%
            % \Height
         \fi
         \ifnum\Incl<0\relax
-           \pgfmathsetmacro\Xheight{0.98 * \Height}%
-           \pgfmathsetmacro\Xheight{\Height - \SinIncl * #1}%  
+           \pgfmathsetmacro\Xheight{\Height - (\SinIncl * #1)}%  
            \global\edef\Height{\Xheight}%
            \pgfmathsetmacro\Xlength{\CosIncl * #1}%
            \global\edef\Length{\Xlength}%  
-           \typeout{Height: \Height, \Xheight}%
+           \typeout{Height: \Height, \Xheight, Length \Length -- #1}%
            % \Height
         \fi
         \ShowTrackName{#2}%
