@@ -28,16 +28,16 @@
 \Stock{5100}{80}  % o.k. % Gleise 5100: 80
 \Stock{5200}{37}  % o.k. % Gleise 5200: 37
 \Stock{5120}{15}  % Gleise 5120: 15
-% 3 Dreiwegweichen
+\Stock{5214}{3}   % Dreiwegweichen
 % 2 Bogenweichen links lang
 % 1 Bogenweichen rechts lang
-% 1 512RL X
-\Stock{5207}{2} % % 2 Kreuzungsweichen 5207
-\Stock{5203L}{1} % 1 5203 L
-\Stock{5118 }{1} % 6 5119 R
-\Stock{5119R}{6} % 1 5118 L
-\Stock{5204R}{4} % 4 5204 R
-\Stock{5118L}{3} % 3 5118 L
+\Stock{5128}{1}   % 1 5128 Kreuzungsweiche
+\Stock{5207}{2}   % % 2 Kreuzungsweichen 5207
+\Stock{5203L}{1}  % 1 5203 L
+\Stock{5118R}{1}  % 6 5119 R
+\Stock{5119R}{6}  % 1 5118 L
+\Stock{5204R}{4}  % 4 5204 R
+\Stock{5118L}{3}  % 3 5118 L
 % 5 Prellböcke
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,7 +65,7 @@
 	\draw (Start)
 			 \SavePosAngle{outer-0}
 			 \Rep{3}{\RCurve{5200}}
-			 \RSwitch[W1][O]{5202R}
+			 \RSwitch[W1][O]{5204}
        \Straight{5106} 
 			 \RCurve{5200}
 			 \LCurve{5100}
@@ -75,7 +75,7 @@
   \draw ($(Start) +(0, 7.74)$)
 			 \SavePosAngle{inner-0}
 			 \Rep{3}{\RCurve{5100}}
-			 \RSwitch[W2][O]{5202R}
+			 \RSwitch[W2][O]{5204}
 			 \XSwitch[W3][O]{5207}
 			 \RCurve{5100}
 			 \LCurve{5200}
@@ -163,7 +163,7 @@
 			 \Rep{3}{\LCurve{5100}}
 			 \Rep{1}{\Straight{5106}}
 			 \XSwitch[W4][B]{5207}   %% korrigieren
-			 \LSwitch[W5][O]{5202L}
+			 \LSwitch[W5][O]{5203}
 			 \Rep{10}{\Straight{5106}}
 			 \Rep{5}{\RCurve{5200}}
 			 \Rep{2}{\Straight{5106}}
@@ -191,7 +191,7 @@
    \def\Angle{0}
    \draw (outer-0)
 			 \Rep{3}{\LCurve{5200}}
-			 \LSwitch[W6][O]{5202L}
+			 \LSwitch[W6][O]{5203}
 			 \Rep{12}{\Straight{5106}}
 			 \Rep{5}{\RCurve{5100}}
 			 \Rep{2}{\Straight{5106}}
@@ -219,8 +219,10 @@
    \draw (W5C)
 			 \Rep{1}{\RCurve{5206}}
 			 \Rep{6}{\Straight{5106}}
-			 \Rep{1}{\LCurve{5100}}
-			 \Rep{1}{\RCurve{5100}}
+			 % \Rep{1}{\LCurve{5100}}
+			 \TSwitch[W7][O]{5214}
+   			 \RestPosAngle{W7L}
+			 \Rep{1}{\RCurve{5206}}
 			 \Rep{1}{\Straight{5108}}
 			 ;
    \RestPosAngle{W4C}
@@ -273,7 +275,7 @@ Gleise 5120: 15
 
 1 5203 L
 
-1 512RL X
+1 5128 X - Kreuzungsweiche
 
 6 5119 R
 

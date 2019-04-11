@@ -102,6 +102,7 @@
 \def\LSwitch[#1][#2]#3{\@nameuse{L#2#3}{#1}\NoOb{\StepGleis{#3}}}
 \def\RSwitch[#1][#2]#3{\@nameuse{R#2#3}{#1}\NoOb{\StepGleis{#3}}}
 \def\XSwitch[#1][#2]#3{\@nameuse{R#2#3}{#1}\NoOb{\StepGleis{#3}}}
+\def\TSwitch[#1][#2]#3{\@nameuse{T#2#3}{#1}\NoOb{\StepGleis{#3}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\TrackNameList{}
@@ -124,7 +125,15 @@
   }%
   \ifcurrentbaselanguage{English}{\English}{\German}\relax
 }
-\def\Stock#1#2{\global\@namedef{S#1}{#2}}
+\def\Stock#1#2{%
+    \edef\TestId{0\@nameuse{V#1}}%  % will eval to 01 if defined
+    % \ifnum\TestId<1\relax
+    %   \typeout{*** Warning ****}%
+    %   \typeout{*** Track #1 not configured ****}%
+    % \fi
+    \typeout{*** \TestId ****}%
+    \global\@namedef{S#1}{#2}
+}
 \newcommand{\Config}[1]{%
   \pgfkeys{/conf, 
     #1,
@@ -137,6 +146,7 @@
     length/.get=\ConfLength,
   }%
   \global\@namedef{N\Id}{0}\relax        % count of tracks for this id
+  \global\@namedef{V\Id}{1}\relax        % indicate that this id is valid
   \immediate\write\ConfigFile{\string\global\string\@namedef{D\Id}%
         {\string\ifcurrentbaselanguage{English}{\English}{\German}}\relax} 
   \immediate\write\ConfigFile{\string\global\string\@nameuse{Def\ConfType}%
@@ -158,6 +168,12 @@
 \def\DefSwitchX#1#2#3#4{% double switch / cross
     \global\@namedef{RO#1}##1{\XSwitchParO{##1}{#3}{#4}{#1}}%
     \global\@namedef{RB#1}##1{\XSwitchParB{##1}{#3}{#4}{#1}}%
+}
+\def\DefSwitchT#1#2#3#4{%
+    \global\@namedef{TO#1}##1{\TSwitchParO{##1}{#3}{#4}{#1}}%
+    \global\@namedef{TS#1}##1{\TSwitchParS{##1}{#3}{#4}{#1}}%
+    \global\@namedef{TL#1}##1{\TSwitchParL{##1}{#3}{#4}{#1}}%
+    \global\@namedef{TR#1}##1{\TSwitchParR{##1}{#3}{#4}{#1}}%
 }
 
 \def\NoOb{arc [radius=50,start angle=0,end angle=0] node}
@@ -248,6 +264,14 @@
    \RestPosAngle{#1}%
    \NormalStraight{18}{}%
 }
+\def\RSwitchParO#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \RCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1C}%
+   \RestPosAngle{#1}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1S}%
+}
 \def\LSwitchParS#1#2#3#4{%
    \NormalStraight{18}{}%
    \SavePosAngle{#1}%
@@ -272,6 +296,24 @@
    \SavePosAngle{#1C}%
    \RestPosAngle{#1S}%
 }
+\def\TSwitchParO#1#2#3#4{%
+   \SavePosAngle{#1O}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1S}%
+   \RestPosAngle{#1O}%
+   \RCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1R}%
+   \RestPosAngle{#1O}%
+   \LCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1L}%
+   \RestPosAngle{#1S}%
+}
+\def\TSwitchParS#1#2#3#4{%
+}
+\def\TSwitchParR#1#2#3#4{%
+}
+\def\TSwitchParL#1#2#3#4{%
+}
 \def\RSwitchParC#1#2#3#4{%
    \LCurvePar{#2}{#3}{#4}{}%  % R curve!
    \SavePosAngle{#1O}%
@@ -279,14 +321,6 @@
    \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
    \RestPosAngle{#1O}%
-}
-\def\RSwitchParO#1#2#3#4{%
-   \SavePosAngle{#1}%
-   \RCurvePar{#2}{#3}{#4}{}%
-   \SavePosAngle{#1C}%
-   \RestPosAngle{#1}%
-   \NormalStraight{18}{}%
-   \SavePosAngle{#1S}%
 }
 \def\XSwitchParO#1#2#3#4{%
    \SavePosAngle{#1}%
@@ -330,6 +364,7 @@
 \Config{id=5110,type={Straight},german={Straight 1/8},english={straight track 1/8},length={2.25}}
 \Config{id=5100,type={Curve},german={Normalkreis},english={normal curve},radius={36.0},angle={30}}
 \Config{id=5147,type={Curve},german={Normalkreis},english={normal curve},radius={36.0},angle={15}}
+\Config{id=5120,type={Curve},german={Industriekreis},english={narrow curve},radius={28.26},angle={45}}
 \Config{id=5200,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={30}}  % ß!
 \Config{id=5205,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={5.7}} % ß!
 \Config{id=5206,type={Curve},german={Aussenkreis},english={outer curve},radius={43.74},angle={24.3}} % ß!
@@ -340,8 +375,13 @@
         radius={36.00},angle={30}}
 \Config{id=5142,type={SwitchR},german={Bogenweiche rechts},english={curved track switch right},
         radius={36.00},angle={30}}
-\Config{id=5202L,type={SwitchL},german={Switch links},english={track switch left},radius={43.74},angle={24.3}}
-\Config{id=5202R,type={SwitchR},german={Switch rechts},english={track switch right},radius={43.74},angle={24.3}}
+%%% 
+% \Config{id=5202L,type={SwitchL},german={Switch links},english={track switch left},radius={43.74},angle={24.3}}
+% \Config{id=5202R,type={SwitchR},german={Switch rechts},english={track switch right},radius={43.74},angle={24.3}}
+\Config{id=5203,type={SwitchL},german={Weiche links},english={track switch left},radius={43.74},angle={24.3}}
+\Config{id=5204,type={SwitchR},german={Weiche rechts},english={track switch right},radius={43.74},angle={24.3}}
+%%% 
+\Config{id=5214,type={SwitchT},german={Dreiwegweiche},english={three way turnover},radius={43.74},angle={24.3}}
 \Config{id=5207,type={SwitchX},german={Doppelweiche / Kreuzungsweiche},english={double switch / cross},radius={43.74},angle={24.3}}
 \end{ConfigSection}
 
@@ -371,8 +411,9 @@
   \GleisAnzahlTab{5205} \\
   \GleisAnzahlTab{5117} \\
   \GleisAnzahlTab{5118} \\
-  \GleisAnzahlTab{5202L} \\
-  \GleisAnzahlTab{5202R} \\
+  \GleisAnzahlTab{5203} \\  % 5202L
+  \GleisAnzahlTab{5204} \\  % 5202R
+  \GleisAnzahlTab{5214} \\  % 5202R
   % 5100  & Normalkreis 360 mm     & 30       & \@nameuse{N5100} \\
   % 5147  & Normalkreis 360 mm     & 15       & \@nameuse{N5147} \\
   % 5200  & Parallelkreis 437,4 mm & 30       & \@nameuse{N5200} \\

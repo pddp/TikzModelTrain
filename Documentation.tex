@@ -183,7 +183,7 @@ We do this using the following code:
 
   \draw (46,12) coordinate (Start)    % start layouting tracks here
     \Straight{5106}               % start with a straight track
-    \LSwitch[W2][S]{5202L}
+    \LSwitch[W2][S]{5203}
     \Rep{3}{\LCurve{5100}}      % 6 curves
     \LSwitch[W1][C]{5117}
     \LCurve{5100} \LCurve{5100} % 2 curves
@@ -197,20 +197,20 @@ We do this using the following code:
     \RestPosAngle{W1S}
     \draw (W1S)
     \Rep{3}{\LCurve{5100}}
-    \RSwitch[W6][O]{5202R}
+    \RSwitch[W6][O]{5204}
     \Straight{5106}
     \Rep{3}{\LCurve{5100}}
     ;
 
   \def\Angle{0} % start horizontally
   \draw ($(Start) - (0,7.74)$) % relative to Start, we lay a second loop
-    \LSwitch[W7][O]{5202L}
+    \LSwitch[W7][O]{5203}
     \Straight{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
     \Straight{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
     \Straight{5106}
-    \RSwitch[W8][S]{5202R}
+    \RSwitch[W8][S]{5204}
     \Rep{3}{\LCurve{5200}} % 3 curves
     \Straight{5106}
     \Rep{3}{\LCurve{5200}} % 3 curves
@@ -251,7 +251,7 @@ The result is shown in \figurename~\ref{f:example4}.
     \coordinate (Start) at (56,390);
 	\draw (Start)
        \Straight{5106} \Straight{5106} 
-       \LSwitch[W3][S]{5202L} 
+       \LSwitch[W3][S]{5203} 
        \Rep{5}{\Straight{5106}}
        \Rep{3}{\RCurve{5200}}
        \Straight{5109} % small correction in length
@@ -278,7 +278,7 @@ The result is shown in \figurename~\ref{f:example4}.
 
   \def\Angle{00}
 	\draw ($(Start) - (0,7.74)$)
-       \Straight{5106} \LSwitch[W1][O]{5202L}
+       \Straight{5106} \LSwitch[W1][O]{5203}
        \Straight{5106} \Straight{5106} \Straight{5106} \Straight{5106} 
        \Straight{5106} \Straight{5106} \RCurve{5100} \RCurve{5100} 
        \RCurve{5100} \Straight{5109} % correction
@@ -309,7 +309,7 @@ The result is shown in \figurename~\ref{f:example4}.
    \draw (W2C)
         \Straight{5106} 
         \Straight{5106} 
-        \LSwitch[W4][C]{5202L} 
+        \LSwitch[W4][C]{5203} 
         \Straight{5106} 
         \Straight{5106} 
         \LCurve{5205}
