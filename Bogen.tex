@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\geometry{hoffset=-1cm,marginparwidth=0cm,textwidth=17cm,textheight=252mm}
+\usepackage[german]{babel}
+\usepackage{tikz}
+\usetikzlibrary{calc,intersections}
+\usepackage[utf8]{inputenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\def\RadA{43.74}
+\def\RadB{36.00}
+\begin{tikzpicture}[scale=0.30]
+   \draw[red] (\RadA,0) coordinate (C) arc [radius = 43.74, start angle=0, end angle=30] 
+      coordinate (o1);
+   \draw[blue] (o1) coordinate (C) arc [radius = 43.74, start angle=30, end angle=60] 
+      coordinate (o2);
+   \draw[line width=2pt] (o2) coordinate (C) arc [radius = 43.74, start angle=60, end angle=90] 
+      coordinate (o3);
+   \draw[line width=2pt] (\RadA,0) arc [radius = 36.00, start angle=0, end angle=30] 
+      coordinate (m1);
+   \draw[red,name path=pm1,line width=2pt] (m1) arc [radius = 36.00, start angle=30, end angle=60] 
+      coordinate (m2);
+   \draw[line width=2pt] (\RadB,0) arc [radius = 36.00, start angle=0, end angle=30] 
+      coordinate (i1);
+   \draw[line width=2pt] (i1) arc [radius = 36.00, start angle=30, end angle=60] 
+      coordinate (i2);
+   \draw[line width=2pt] (i2) arc [radius = 36.00, start angle=60, end angle=90] 
+      coordinate (i3);
+   \draw (0,0) -- (\RadA,0);
+   \draw (0,0) node {x};
+   \draw[name path=po1,dashed] (0,0) -- (o1);
+   \draw[name path=po2,dashed] (0,0) -- (o2);
+   \draw ($(\RadA,0)-(\RadB,0)$) coordinate(C2) node {x};
+   \draw[green,name path=pr11,dashed] (C2) -- (m1);
+   \draw[dashed] (C2) -- (m2);
+   \draw[dotted,name path=ptm1] (m1) -- +(120:30);
+   \draw[dotted] (o2) -- +(-30:30);
+   \path[name intersections={of=po1 and ptm1}] (intersection-1) coordinate(A);
+
+   \draw[red,line width=2pt] (A) node {} -- (m1) node {};
+
+   \draw[red,line width=2pt] (o2) arc [radius = 36.00, start angle=60, end angle=30] 
+      coordinate(o4) ;
+
+   \draw[red,line width=2pt] (m1) node {} -- (o4) node {};
+
+   \draw[name path=pr12,dashed] (o4)  -- +( $(C2) - (m1)$ ) coordinate (C3) node {x};  % parallele
+
+\end{tikzpicture}
+% \layout
+\end{document}
