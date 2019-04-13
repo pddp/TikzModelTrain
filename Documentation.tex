@@ -376,6 +376,62 @@ in \tablename~\ref{t:example4}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Switches}
+
+\begin{verbwrite}{SwitchNames}
+\begin{tikzpicture}[scale=0.10]
+  \def\Angle{90}
+  \draw (5,55) coordinate (Start)    % start layouting tracks here
+  \Rep{1}{\RCSwitch[S1][O]{5142}}
+  ;
+  \def\Angle{90}
+  \draw (15,55) 
+  \Rep{1}{\LCSwitch[S2][O]{5141}}
+  ;
+
+  \def\Angle{90}
+  \draw (35,55) 
+        \LSwitch[S3][O]{5203} 
+  ;
+  \def\Angle{90}
+  \draw (45,55) 
+    \LSwitch[W1][O]{5117}  % Switch named W1
+  ;
+  \def\Angle{90}
+  \draw (55,55) 
+    \RSwitch[W2][O]{5118} % Switch named W2
+  ;
+
+  % \draw (S1O) node {O};
+  \draw (S1C) node[above] {C};
+  \draw (S1S) node[above] {S};
+
+  % \draw (S2O) node[above] {O};
+  % \draw (S2C) node[above] {C};
+  \draw (S2S) node[above] {S};
+
+  % \draw (S3O) node[above] {O};
+  \draw (S3C) node[above] {C};
+  \draw (S3S) node[above] {S};
+
+  % \draw (W1O) node[above] {O};
+  \draw (W1C) node[above] {C};
+  \draw (W1S) node[above] {S};
+
+  % \draw (W2O) node[above] {O};
+  \draw (W2C) node[above] {C};
+  \draw (W2S) node[above] {S};
+\end{tikzpicture}
+\end{verbwrite}
+
+Switch layout and labels is illustrated in \figurename~\ref{f:switch0}
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchNames}}
+  \end{center}
+  \caption{Switches}\label{f:switch0}
+\end{figure}
+
 \begin{verbwrite}{SwitchExample1}
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
@@ -398,7 +454,7 @@ in \tablename~\ref{t:example4}.
   \def\Angle{90} % start horizontally
   \draw ($(Start) + (7.74,0)$) % relative to Start, we lay a second loop
     \Rep{2}{\RCurve{5100}}
-    \Rep{1}{\LCSwitch[S3][O]{5141}}
+    \Rep{1}{\LCSwitch[S3][C]{5141}}
     \Rep{1}{\RCSwitch[S4][O]{5142}}
     \RestPosAngle{S4C}
     \Rep{3}{\RCurve{5100}}
