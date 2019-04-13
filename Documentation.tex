@@ -374,6 +374,49 @@ in \tablename~\ref{t:example4}.
 %  \caption{Tracks used in Example 4}\label{tab:example4}
 % \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Switches}
+\begin{verbwrite}{SwitchExample1}
+\begin{tikzpicture}[scale=0.06]
+  \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
+
+  \def\Angle{90}
+  % outer
+  \draw (5,55) coordinate (Start)    % start layouting tracks here
+    \Rep{1}{\RCurve{5100}}
+    \Rep{1}{\RCSwitch[S1][O]{5142}}
+    \Rep{1}{\RCurve{5200}}
+    \Rep{1}{\RCurve{5200}}
+    \Rep{1}{\LCSwitch[S2][S]{5141}}
+    \Rep{1}{\RCurve{5100}}
+    % \Rep{2}{\RCurve{5200}}
+    \Rep{3}{\RCurve{5200}}
+    \Rep{3}{\RCurve{5200}}
+      ;
+
+  % inner
+  \def\Angle{90} % start horizontally
+  \draw ($(Start) + (7.74,0)$) % relative to Start, we lay a second loop
+    \Rep{2}{\RCurve{5100}}
+    \Rep{1}{\LCSwitch[S3][O]{5141}}
+    \Rep{1}{\RCSwitch[S4][O]{5142}}
+    \RestPosAngle{S4C}
+    \Rep{3}{\RCurve{5100}}
+    \Rep{3}{\RCurve{5100}}
+    \Rep{3}{\RCurve{5100}}
+    ;
+\end{tikzpicture}
+\end{verbwrite}
+
+An example for curved switches is shown in \figurename~\ref{f:switch1}
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchExample1}}
+  \end{center}
+  \caption{Example for switches}\label{f:switch1}
+\end{figure}
+
 \section{Known Problems}
 
 \begin{itemize}

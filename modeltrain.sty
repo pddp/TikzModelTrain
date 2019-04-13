@@ -169,11 +169,7 @@
     \global\@namedef{CRS#1}##1{\CRSwitchParS{##1}{#3}{#4}{#1}}%
     \global\@namedef{CRC#1}##1{\CRSwitchParC{##1}{#3}{#4}{#1}}%
 }
-\def\DefCSwitchC#1#2#3#4{%
-    \global\@namedef{RO#1}##1{\CRSwitchParO{##1}{#3}{#4}{#1}}%
-    \global\@namedef{RS#1}##1{\CRSwitchParS{##1}{#3}{#4}{#1}}%
-    \global\@namedef{RC#1}##1{\CRSwitchParC{##1}{#3}{#4}{#1}}%
-}
+%%%%%%%%%%%%%%%%%%%
 \def\DefSwitchR#1#2#3#4{%
     \global\@namedef{RO#1}##1{\RSwitchParO{##1}{#3}{#4}{#1}}%
     \global\@namedef{RS#1}##1{\RSwitchParS{##1}{#3}{#4}{#1}}%
@@ -285,38 +281,44 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Baustelle
 \def\Diff{7.74}
-\def\CLSwitchParO#1#2#3#4{%
-   % Currently, Märklin only - ignore arguments 2-4
+% Currently, Märklin only - ignore arguments 2-4
+\def\CLSwitchParS#1#2#3#4{%
    \SavePosAngle{#1}%
-   \SavePosAngle{#1O}%
-   \LCurvePar{#2}{#3}{#4}{}%    5100
-   \SavePosAngle{#1C}%
-   \RestPosAngle{#1}%
-   \NormalStraight{2}{}% % Gerade -- wie lange?
-   % \LCurvePar{43.74}{#3}{#4}{}% 
-   \LCurvePar{48}{30}{}%    5100! L!
    \SavePosAngle{#1S}%
-   % \RestPosAngle{#1C}%
+   \RCurvePar{36}{30}{}{}%    5100
+    -- +(\Angle:\Diff) node {\strut}%
+   \SavePosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
+   \LCurvePar{36}{30}{}%    5100! L!
+   \RestPosAngle{#1O}%
 }
 \def\CLSwitchParC#1#2#3#4{}
-\def\CLSwitchParS#1#2#3#4{}
+\def\CLSwitchParO#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \RCurvePar{36}{30}{}{}%    5100! R!
+   \SavePosAngle{#1S}%
+   \NoOb {\AddToAngle{-180}}%
+    -- +(\Angle:\Diff) node {\Bullet}%
+   \LCurvePar{36}{30}{}%    5100! L!
+   \RestPosAngle{#1S}%
+}
 \def\CRSwitchParC#1#2#3#4{
    \LCurvePar{43.74}{#3}{#4}{}%    5100! L!
    % \NormalStraight{4}{}% % Gerade -- wie lange?
-    -- +(\Angle:\Diff) node {\Bullet}%
+    -- +(\Angle:\Diff) node {}%
    \SavePosAngle{#1S}%
    \NoOb {\AddToAngle{-180}}%
-   % \RCurvePar{#2}{#3}{#4}{}%    5100! L!
-   \RCurvePar{48}{30}{}%    5100! L!
+   \RCurvePar{36}{30}{}%    5100! L!
    \RestPosAngle{#1S}%
 }
 \def\CRSwitchParO#1#2#3#4{%
    \SavePosAngle{#1}%
-   \LCurvePar{36}{#3}{#4}{}%    5100! L!
+   \RCurvePar{36}{30}{}{}%    5100! L!
    \SavePosAngle{#1C}%
-   \NoOb {\AddToAngle{-180}}%
-   \RCurvePar{48}{30}{}%    5100! L!
-   \RestPosAngle{#1C}%
+   \RestPosAngle{#1}%
+   -- +(\Angle:\Diff) node {\Bullet}%
+   \RCurvePar{36}{30}{}%    5100! L!
+   \SavePosAngle{#1S}%
 }
 \def\CRSwitchParS#1#2#3#4{%
    \SavePosAngle{#1}%
