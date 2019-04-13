@@ -9,32 +9,31 @@
 \begin{document}
 \def\RadA{43.74}
 \def\RadB{36.00}
+\def\Diff{7.74}
 \begin{tikzpicture}[scale=0.30]
    \draw[red] (\RadA,0) coordinate (C) arc [radius = 43.74, start angle=0, end angle=30] 
       coordinate (o1);
    \draw[blue] (o1) coordinate (C) arc [radius = 43.74, start angle=30, end angle=60] 
-      coordinate (o2);
+      node {$\bullet$} coordinate (o2);
    \draw[line width=2pt] (o2) coordinate (C) arc [radius = 43.74, start angle=60, end angle=90] 
-      coordinate (o3);
+      node {$\bullet$} coordinate (o3);
    \draw[line width=2pt] (\RadA,0) arc [radius = 36.00, start angle=0, end angle=30] 
-      coordinate (m1);
+      node {$\bullet$} coordinate (m1);
    \draw[red,name path=pm1,line width=2pt] (m1) arc [radius = 36.00, start angle=30, end angle=60] 
       coordinate (m2);
    \draw[line width=2pt] (\RadB,0) arc [radius = 36.00, start angle=0, end angle=30] 
-      coordinate (i1);
+      node {$\bullet$} coordinate (i1);
    \draw[line width=2pt] (i1) arc [radius = 36.00, start angle=30, end angle=60] 
-      coordinate (i2);
-   \draw[line width=2pt] (i2) arc [radius = 36.00, start angle=60, end angle=90] 
-      coordinate (i3);
-   \draw (0,0) -- (\RadA,0);
-   \draw (0,0) node {x};
+      node {$\bullet$} coordinate (i2);
+
+   \draw[dashed] (0,0) node {x} -- (\RadA,0);
    \draw[name path=po1,dashed] (0,0) -- (o1);
    \draw[name path=po2,dashed] (0,0) -- (o2);
    \draw ($(\RadA,0)-(\RadB,0)$) coordinate(C2) node {x};
-   \draw[green,name path=pr11,dashed] (C2) -- (m1);
+   \draw[name path=pr11,dashed] (C2) -- (m1);
    \draw[dashed] (C2) -- (m2);
-   \draw[dotted,name path=ptm1] (m1) -- +(120:30);
-   \draw[dotted] (o2) -- +(-30:30);
+   \path[dotted,name path=ptm1] (m1) -- +(120:30); % Tangente
+   % \draw[dotted] (o2) -- +(-30:30); % Tangente
    \path[name intersections={of=po1 and ptm1}] (intersection-1) coordinate(A);
 
    \draw[red,line width=2pt] (A) node {} -- (m1) node {};
@@ -45,6 +44,21 @@
    \draw[red,line width=2pt] (m1) node {} -- (o4) node {};
 
    \draw[name path=pr12,dashed] (o4)  -- +( $(C2) - (m1)$ ) coordinate (C3) node {x};  % parallele
+
+   % Weiche 2
+   \draw[blue,line width=2pt] (i2) arc [radius = 36.00, start angle=60, end angle=90] 
+      node {$\bullet$} coordinate (i3);
+
+   \draw[blue,line width=2pt] (i3) node {} -- +(0:\Diff) coordinate(m3);
+
+   \draw[blue,line width=2pt] (m3) arc [radius=36.00, start angle=90, end angle=60] ;
+
+   \draw[] ($ (0,0) - (0,1) $)   -- ($ (\RadA,0) - (0,1) $) node[midway, below] {r1};
+   \draw[] ($ (0,0) - (0,3) $)   -- ($ (\RadB,0) - (0,3) $) node[midway, below] {r2};
+   \draw[] ($ (\RadB,0) - (0,4) $)   -- ($ (\RadA,0) - (0,4) $) node[midway, below] {d};
+
+   \draw[dashed] (\Diff,0) arc [radius = \Diff, start angle=00, end angle=60] ;
+   \draw[dashed] (\Diff,0)  -- (C3);
 
 \end{tikzpicture}
 % \layout

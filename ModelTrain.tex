@@ -147,17 +147,18 @@
 
    \RestPosAngle{outer-4}
    \draw[color=green] (outer-4)
-			 \Rep{1}{\LCSwitch[B7][O]{5141}}
 			 \Rep{2}{\LCurve{5100}}
+			 \Rep{1}{\RCSwitch[B7][S]{5142}} 
 			 \Rep{2}{\Straight{5106}}
 			 ;
 
    \RestPosAngle{inner-4}
    \draw[color=green] (inner-4)
+			 % Hier Außenkreis
+			 \Rep{1}{\LCurve{5100}}      % 5100!
+			 \Rep{1}{\LCSwitch[B7][O]{5141}}
 			 \Rep{1}{\LCurve{5200}}
-			 \Rep{1}{\RCSwitch[B7][C]{5142}}
-			 \Rep{1}{\LCurve{5200}}
-			 \Rep{2}{\Straight{5106}}
+			 \Rep{2}{\Straight{5106}} 
 			 ;
    
    \RestPosAngle{inner-0}

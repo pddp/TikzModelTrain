@@ -108,6 +108,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\TrackNameList{}
+\def\TrackNumberList{}
 \pgfkeys{%
   /conf/.is family,%
   /conf,%
@@ -154,6 +155,7 @@
   \immediate\write\ConfigFile{\string\global\string\@nameuse{Def\ConfType}%
         {\Id}{\ConfLength}{\ConfRadius}{\ConfAngle}\relax}\relax
     \global\edef\TrackNameList{\TrackNameList,\ConfType{\Id}}\relax
+    \global\edef\TrackNumberList{\TrackNumberList,\Id}\relax
 }
 \def\DefStraight#1#2#3#4{\global\@namedef{G#1}{\NormalStraight{#2}{#1}}\relax}
 \def\DefCurve#1#2#3#4{\global\@namedef{R#1}{\RCurvePar{#3}{#4}{#1}}\global\@namedef{L#1}{\LCurvePar{#3}{#4}{#1}}}
@@ -282,6 +284,7 @@
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Baustelle
+\def\Diff{7.74}
 \def\CLSwitchParO#1#2#3#4{%
    % Currently, Märklin only - ignore arguments 2-4
    \SavePosAngle{#1}%
@@ -289,23 +292,40 @@
    \LCurvePar{#2}{#3}{#4}{}%    5100
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
-   \NormalStraight{4}{}% % Gerade -- wie lange?
-   \LCurvePar{43}{#3}{#4}{}% 
+   \NormalStraight{2}{}% % Gerade -- wie lange?
+   % \LCurvePar{43.74}{#3}{#4}{}% 
+   \LCurvePar{48}{30}{}%    5100! L!
    \SavePosAngle{#1S}%
-   \RestPosAngle{#1C}%
+   % \RestPosAngle{#1C}%
 }
 \def\CLSwitchParC#1#2#3#4{}
 \def\CLSwitchParS#1#2#3#4{}
 \def\CRSwitchParC#1#2#3#4{
-   \LCurvePar{43}{#3}{#4}{}%    5100! L!
-   \NormalStraight{4}{}% % Gerade -- wie lange?
+   \LCurvePar{43.74}{#3}{#4}{}%    5100! L!
+   % \NormalStraight{4}{}% % Gerade -- wie lange?
+    -- +(\Angle:\Diff) node {\Bullet}%
    \SavePosAngle{#1S}%
    \NoOb {\AddToAngle{-180}}%
-   \RCurvePar{#2}{#3}{#4}{}%    5100! L!
+   % \RCurvePar{#2}{#3}{#4}{}%    5100! L!
+   \RCurvePar{48}{30}{}%    5100! L!
    \RestPosAngle{#1S}%
 }
-\def\CRSwitchParO#1#2#3#4{}
-\def\CRSwitchParS#1#2#3#4{}
+\def\CRSwitchParO#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \LCurvePar{36}{#3}{#4}{}%    5100! L!
+   \SavePosAngle{#1C}%
+   \NoOb {\AddToAngle{-180}}%
+   \RCurvePar{48}{30}{}%    5100! L!
+   \RestPosAngle{#1C}%
+}
+\def\CRSwitchParS#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \LCurvePar{36}{#3}{#4}{}%    5100! L!
+   \SavePosAngle{#1C}%
+   \NoOb {\AddToAngle{-180}}%
+   \RCurvePar{48}{30}{}%    5100! L!
+   \RestPosAngle{#1C}%
+}
 %% end Baustelle
 
 \def\LSwitchParO#1#2#3#4{%
@@ -469,13 +489,12 @@
   \GleisAnzahlTab{5203} \\  % 5202L
   \GleisAnzahlTab{5204} \\  % 5202R
   \GleisAnzahlTab{5214} \\  % 5202R
-  % 5100  & Normalkreis 360 mm     & 30       & \@nameuse{N5100} \\
-  % 5147  & Normalkreis 360 mm     & 15       & \@nameuse{N5147} \\
-  % 5200  & Parallelkreis 437,4 mm & 30       & \@nameuse{N5200} \\
-  % 5205  & Parallelkreis 437,4 mm & 5.7      & \@nameuse{N5205} \\
-  % 5117  & Switch Normalkreis     & 30       & \@nameuse{N5117} \\
   % 5118  & Switch Normalkreis     & 30       & \@nameuse{N5118} \\
   % 5202  & Switch                 & 24,3     & \@nameuse{N5202} \\
+  \foreach \i in \TrackNumberList{%
+    \typeout{GleisAnzahlTab{\i}}%
+    % \GleisAnzahlTab{\i} \\%
+  } \\
   \hline
 \end{tabular}
 }
