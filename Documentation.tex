@@ -38,6 +38,10 @@
 
 \maketitle
 
+\tableofcontents
+
+\newpage
+
 What is the idea behind the following package?
 \begin{itemize}
   \item I want to create a track layout for a model train.
@@ -79,12 +83,8 @@ For Märklin, the following track names are admissible:
 \foreach \i in \TrackNameList{\i, }
 For curves we need to use either \texttt{LCurve} or \texttt{RCurve} to indicate the direction.
 
-\begin{tabular}{cc}
-   \includegraphics[width=0.2\linewidth]{img/mm5142.jpg} & 5154 (right)\\
-\end{tabular}
-
-
-\section{Examples}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{First Examples}
 
 We start with a small complete example without switches, as shown in the following:
 
@@ -138,7 +138,6 @@ Each of these switches will have an open end when I lay the first loop.
 
 Then we continue at the open end of W1 to connect it to the open end of W2.
 
-
 \begin{verbwrite}{example2}
 \begin{tikzpicture}[scale=0.06]
   \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
@@ -147,28 +146,30 @@ Then we continue at the open end of W1 to connect it to the open end of W2.
     \Straight{5106}          % start with a straight track
     \Rep{3}{\LCurve{5100}} % 6 curves
     -- +(0,0) node {O}
-    \LSwitch[W1][C]{5117}  % Switch named W1
-    -- +(0,0) node {C}
+    \LSwitch[W1][O]{5117}  % Switch named W1
+    -- +(0,0) node {S}
     \LCurve{5100}          
+    \LCurve{5100} 
     \LCurve{5100} 
     \Straight{5106} 
     \LCurve{5100} 
     \LCurve{5100} 
-    -- +(0,0) node {C}
-    \RSwitch[W2][C]{5118} % Switch named W2
+    \LCurve{5100} 
+    -- +(0,0) node {S}
+    \RSwitch[W2][S]{5118} % Switch named W2
     -- +(0,0) node {O}
     \Rep{3}{\LCurve{5100}} 
     ;
 
-    \draw (W2S) -- +(0,0) node {S} ;
+    % \draw (W2S) -- +(0,0) node {S} ;
     
-    \RestPosAngle{W1S}  % Restore settings at label W1 direction S
-    \draw (W1S)         % Start drawing at this position (open end of W1)
-       -- +(0,0) node {S}
-       \Rep{3}{\LCurve{5100}}
-       \Straight{5106}  
-       \Rep{3}{\LCurve{5100}}
-      ;
+    \RestPosAngle{W1C}  % Restore settings at label W1 direction S
+    \draw (W1C)         % Start drawing at this position (open end of W1)
+        -- +(0,0) node {C}
+        \Rep{2}{\LCurve{5100}}
+        \Straight{5106}  
+        \Rep{2}{\LCurve{5100}}
+    ;
 \end{tikzpicture}
 \end{verbwrite}
 
@@ -231,6 +232,180 @@ We do this using the following code:
   \centerline{\input{example3}}
   \caption{Example 3}\label{f:example3}
 \end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Switches}
+
+\makeatletter
+\def\SwitchTest#1#2#3{%
+    \Straight{5106}
+    \@nameuse{#1}[S#2][#3]{#2}
+    \Straight{5106}
+    ;
+    \draw (S#2O) node {O};
+    \draw (S#2C) node[above] {C};
+    \draw (S#2S) node[above] {S}
+}
+
+\begin{verbwrite}{SwitchNames}
+\begin{tikzpicture}[scale=0.10]
+  \def\Angle{90}
+  \draw (05,55) \SwitchTest{LCSwitch}{5141}{O};
+
+  \def\Angle{90}
+  \draw (15,55) \SwitchTest{LCSwitch}{5141}{C};
+
+  \def\Angle{90}
+  \draw (25,55) \SwitchTest{LCSwitch}{5141}{S};
+
+  \def\Angle{90}
+  \draw (55,55) \SwitchTest{RCSwitch}{5142}{O};
+
+  \def\Angle{90}
+  \draw (85,55) \SwitchTest{RCSwitch}{5142}{C};
+
+  \def\Angle{90}
+  \draw (95,55) \SwitchTest{RCSwitch}{5142}{S};
+\end{tikzpicture}
+\end{verbwrite}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{verbwrite}{SwitchNames1}
+\begin{tikzpicture}[scale=0.10]
+  \def\Angle{90}
+  \draw (05,55) \SwitchTest{LSwitch}{5203}{O};
+
+  \def\Angle{90}
+  \draw (15,55) \SwitchTest{LSwitch}{5203}{C};
+
+  \def\Angle{90}
+  \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
+
+  \def\Angle{90}
+  \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
+
+  \def\Angle{90}
+  \draw (75,55) \SwitchTest{RSwitch}{5204}{C};
+
+  \def\Angle{90}
+  \draw (95,55) \SwitchTest{RSwitch}{5204}{S};
+
+  % \def\Angle{90}
+  % \draw (55,55) 
+  %       \LSwitch[S3][O]{5203} 
+  % ;
+  % \def\Angle{90}
+  % \draw (65,55) 
+  %   \LSwitch[W1][O]{5117}  % Switch named W1
+  % ;
+  % \def\Angle{90}
+  % \draw (75,55) 
+  %   \RSwitch[W2][O]{5118} % Switch named W2
+  % ;
+
+  % \draw (S1O) node {O};
+  % \draw (S1C) node[above] {C};
+  % \draw (S1S) node[above] {S};
+
+  % \draw (S2O) node[above] {O};
+  % \draw (S2C) node[above] {C};
+  %\draw (S2S) node[above] {S};
+
+  % \draw (S3O) node[above] {O};
+  %\draw (S3C) node[above] {C};
+  %\draw (S3S) node[above] {S};
+
+  % \draw (W1O) node[above] {O};
+  % \draw (W1C) node[above] {C};
+  % \draw (W1S) node[above] {S};
+
+  % \draw (W2O) node[above] {O};
+  % \draw (W2C) node[above] {C};
+  % \draw (W2S) node[above] {S};
+\end{tikzpicture}
+\end{verbwrite}
+
+Switch layout and labels for curved switches 5141 (left switch) 5142 (right switch) 
+and is illustrated in \figurename~\ref{f:switch0}.
+Three tracks are layed here: first a straight track upwards, then comes the switch with
+different points to join, then comes agein a straight track.
+An image of such a curved switch is shown in \figurename~\ref{f:5142}.
+
+\begin{figure}
+\begin{tabular}{cc}
+   \includegraphics[width=0.2\linewidth]{img/mm5142.jpg} & 5142 (right)\\
+\end{tabular}
+   \caption{Curved Switch right number 5142}\label{f:5142}
+\end{figure}
+
+
+Regular straight switches are illustraed in in \figurename~\ref{f:switch1} where the
+same three tracks are layed (stright, swithc, straight).
+Naming conventions are similar for switches 5203 and 5117 as well as for switches 5204 and 5118.
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchNames}}
+  \end{center}
+  \caption{Switches 5141 (switch left, shown on the left)
+              and 5142 (switch right, shown on the right)}\label{f:switch0}
+\end{figure}
+
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchNames1}}
+  \end{center}
+  \caption{Switches 5203 (switch left, shown on the left)
+              and 5204 (switch right, shown on the right)}\label{f:switch1}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{verbwrite}{SwitchExample1}
+\begin{tikzpicture}[scale=0.06]
+  \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
+
+  \def\Angle{90}
+  % outer
+  \draw (5,55) coordinate (Start)    % start layouting tracks here
+    \Rep{1}{\RCurve{5100}}
+    \Rep{1}{\RCSwitch[S1][O]{5142}}
+    \Rep{1}{\RCurve{5200}}
+    \Rep{1}{\RCurve{5200}}
+    \Rep{1}{\LCSwitch[S2][S]{5141}}
+    \Rep{1}{\RCurve{5100}}
+    % \Rep{2}{\RCurve{5200}}
+    \Rep{3}{\RCurve{5200}}
+    \Rep{3}{\RCurve{5200}}
+      ;
+
+  % inner
+  \def\Angle{90} % start horizontally
+  \draw ($(Start) + (7.74,0)$) % relative to Start, we lay a second loop
+    \Rep{2}{\RCurve{5100}}
+    \Rep{1}{\LCSwitch[S3][C]{5141}}
+    \Rep{1}{\RCSwitch[S4][O]{5142}}
+    \RestPosAngle{S4C}
+    \Rep{3}{\RCurve{5100}}
+    \Rep{3}{\RCurve{5100}}
+    \Rep{3}{\RCurve{5100}}
+    ;
+\end{tikzpicture}
+\end{verbwrite}
+
+An example for curved switches is shown in \figurename~\ref{f:switch1}
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchExample1}}
+  \end{center}
+  \caption{Example for switches}\label{f:switch1}
+\end{figure}
+
+\section{Bigger Examples}
 
 A quite complex example is given in Lst.\ref{ex:example4}
 The result is shown in \figurename~\ref{f:example4}.
@@ -373,132 +548,6 @@ in \tablename~\ref{t:example4}.
 % \centerline{\IfFileExists{example4.pdf}{\includegraphics[page=2,width=0.7\linewidth]{example4.pdf}}{file missing}}
 %  \caption{Tracks used in Example 4}\label{tab:example4}
 % \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Switches}
-
-\makeatletter
-\def\SwitchTest#1#2#3{%
-    \Straight{5106}
-    \@nameuse{#1}[S#2][#3]{#2}
-    \Straight{5106}
-    ;
-    \draw (S#2O) node {O};
-    \draw (S#2C) node[above] {C};
-    \draw (S#2S) node[above] {S}
-}
-
-\begin{verbwrite}{SwitchNames}
-\begin{tikzpicture}[scale=0.10]
-  \def\Angle{90}
-  \draw (05,55) \SwitchTest{LCSwitch}{5141}{O};
-
-  \def\Angle{90}
-  \draw (15,55) \SwitchTest{LCSwitch}{5141}{C};
-
-  \def\Angle{90}
-  \draw (25,55) \SwitchTest{LCSwitch}{5141}{S};
-
-  \def\Angle{90}
-  \draw (55,55) \SwitchTest{RCSwitch}{5142}{O};
-
-  \def\Angle{90}
-  \draw (85,55) \SwitchTest{RCSwitch}{5142}{C};
-
-  \def\Angle{90}
-  \draw (95,55) \SwitchTest{RCSwitch}{5142}{S};
-\end{tikzpicture}
-\end{verbwrite}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{verbwrite}{SwitchNames1}
-\begin{tikzpicture}[scale=0.10]
-  \def\Angle{90}
-  \draw (35,55) 
-        \LSwitch[S3][O]{5203} 
-  ;
-  \def\Angle{90}
-  \draw (45,55) 
-    \LSwitch[W1][O]{5117}  % Switch named W1
-  ;
-  \def\Angle{90}
-  \draw (55,55) 
-    \RSwitch[W2][O]{5118} % Switch named W2
-  ;
-
-  % \draw (S1O) node {O};
-  % \draw (S1C) node[above] {C};
-  % \draw (S1S) node[above] {S};
-
-  % \draw (S2O) node[above] {O};
-  % \draw (S2C) node[above] {C};
-  %\draw (S2S) node[above] {S};
-
-  % \draw (S3O) node[above] {O};
-  %\draw (S3C) node[above] {C};
-  %\draw (S3S) node[above] {S};
-
-  % \draw (W1O) node[above] {O};
-  \draw (W1C) node[above] {C};
-  \draw (W1S) node[above] {S};
-
-  % \draw (W2O) node[above] {O};
-  \draw (W2C) node[above] {C};
-  \draw (W2S) node[above] {S};
-\end{tikzpicture}
-\end{verbwrite}
-
-Switch layout and labels is illustrated in \figurename~\ref{f:switch0}
-
-\begin{figure}
-  \begin{center}
-  {\input{SwitchNames}}
-  \end{center}
-  \caption{Switches}\label{f:switch0}
-\end{figure}
-
-\begin{verbwrite}{SwitchExample1}
-\begin{tikzpicture}[scale=0.06]
-  \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
-
-  \def\Angle{90}
-  % outer
-  \draw (5,55) coordinate (Start)    % start layouting tracks here
-    \Rep{1}{\RCurve{5100}}
-    \Rep{1}{\RCSwitch[S1][O]{5142}}
-    \Rep{1}{\RCurve{5200}}
-    \Rep{1}{\RCurve{5200}}
-    \Rep{1}{\LCSwitch[S2][S]{5141}}
-    \Rep{1}{\RCurve{5100}}
-    % \Rep{2}{\RCurve{5200}}
-    \Rep{3}{\RCurve{5200}}
-    \Rep{3}{\RCurve{5200}}
-      ;
-
-  % inner
-  \def\Angle{90} % start horizontally
-  \draw ($(Start) + (7.74,0)$) % relative to Start, we lay a second loop
-    \Rep{2}{\RCurve{5100}}
-    \Rep{1}{\LCSwitch[S3][C]{5141}}
-    \Rep{1}{\RCSwitch[S4][O]{5142}}
-    \RestPosAngle{S4C}
-    \Rep{3}{\RCurve{5100}}
-    \Rep{3}{\RCurve{5100}}
-    \Rep{3}{\RCurve{5100}}
-    ;
-\end{tikzpicture}
-\end{verbwrite}
-
-An example for curved switches is shown in \figurename~\ref{f:switch1}
-
-\begin{figure}
-  \begin{center}
-  {\input{SwitchExample1}}
-  \end{center}
-  \caption{Example for switches}\label{f:switch1}
-\end{figure}
-
 \section{Known Problems}
 
 \begin{itemize}

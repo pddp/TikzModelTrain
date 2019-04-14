@@ -2,7 +2,6 @@
 %% should have options
 % - maerklin / fleischmann / ... for the track manufacturers
 % - german, english, ... for the language
-% - ticks / bullets for the end of tracks
 % - names (name pieces)
 %%
 % One should also be able to change these options by some \set... command
@@ -83,7 +82,7 @@
    \@namegedef{N#1}{\the\@tempcnta}\relax
 }
 
-\def\Bullet{\pgfmathsetmacro\XAngle{\Angle + 90}\rotatebox{\XAngle}{\tiny{|}}}
+\def\TTick{\pgfmathsetmacro\XAngle{\Angle + 90}\rotatebox{\XAngle}{\tiny{|}}}
 
 \def\Rep#1{\foreach \i in {1,...,#1}}
 
@@ -226,12 +225,12 @@
     % [draw,color=red] 
     % edge[red] +(0,0)
     -- 
-    +(\Angle:\Length) node {\Bullet}%
+    +(\Angle:\Length) node {\TTick}%
 }
 %%%
-\def\RCurvePar#1#2#3{\CurvePar{#1}{#2}{#3}{90}}
-\def\LCurvePar#1#2#3{\CurvePar{#1}{-#2}{#3}{-90}}
-\def\CurvePar#1#2#3#4{%
+\def\RCurvePar#1#2#3{\CurvePar{#1}{#2}{#3}{90}{\TTick}}
+\def\LCurvePar#1#2#3{\CurvePar{#1}{-#2}{#3}{-90}{\TTick}}
+\def\CurvePar#1#2#3#4#5{%
     % Trick: hide computation in invisible arc
     \NoOb {%
         \pgfmathsetmacro\XStartA{\Angle + #4}%
@@ -245,7 +244,7 @@
 	arc [radius=#1,                % fixed radius
          start angle=\StartA,      % Angle +  90
 	 	 end angle=\EndA]          % Angle +  60
-         node {\AddToAngle{-#2}\Bullet}%
+         node {\AddToAngle{-#2}#5}%
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                              
@@ -307,7 +306,8 @@
 \def\CLSwitchParS#1#2#3#4{% tested
    \SavePosAngle{#1}%
    \SavePosAngle{#1S}%
-   \RCurvePar{36}{30}{}{}%    5100
+   % \RCurvePar{36}{30}{}{}{}%    5100
+   \CurvePar{36}{30}{}{90}{\strut}%    5100
     -- +(\Angle:\Diff) node {\strut}%
    \SavePosAngle{#1O}%
    \NoOb {\AddToAngle{-180}}%
@@ -340,7 +340,8 @@
 \def\CRSwitchParS#1#2#3#4{% tested
    \SavePosAngle{#1}%
    \SavePosAngle{#1S}%
-   \LCurvePar{36}{30}{}{}%    5100
+   % \LCurvePar{36}{30}{}{}%    fixme - TTick!
+   \CurvePar{36}{-30}{}{-90}{\strut}%    5100
     -- +(\Angle:\Diff) node {\strut}%
    \SavePosAngle{#1O}%
    \NoOb {\AddToAngle{-180}}%
@@ -349,17 +350,18 @@
    \RestPosAngle{#1O}%
 }
 %% end Baustelle
-
 \def\LSwitchParO#1#2#3#4{%
    \SavePosAngle{#1}%
+   \SavePosAngle{#1O}%
    \LCurvePar{#2}{#3}{#4}{}%
-   \SavePosAngle{#1S}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
    \NormalStraight{18}{}%
+   \SavePosAngle{#1S}%
 }
 \def\RSwitchParO#1#2#3#4{%
    \SavePosAngle{#1}%
+   \SavePosAngle{#1O}%
    \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
@@ -367,9 +369,10 @@
    \SavePosAngle{#1S}%
 }
 \def\LSwitchParS#1#2#3#4{%
+   \SavePosAngle{#1S}%
    \NormalStraight{18}{}%
    \SavePosAngle{#1}%
-   \SavePosAngle{#1S}%
+   \SavePosAngle{#1O}%
    \NoOb {\AddToAngle{-180}}%
    \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
@@ -377,18 +380,22 @@
 }
 \def\LSwitchParC#1#2#3#4{%
    \SavePosAngle{#1}%
+   \SavePosAngle{#1C}%
+   \RCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
    \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
-   \RestPosAngle{#1}%
-   \LCurvePar{#2}{#3}{#4}{}%
+   \RestPosAngle{#1O}%
 }
 \def\RSwitchParS#1#2#3#4{%
-   \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1O}%
    \NoOb {\AddToAngle{-180}}%
    \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
-   \RestPosAngle{#1S}%
+   \RestPosAngle{#1O}%
 }
 \def\TSwitchParO#1#2#3#4{%
    \SavePosAngle{#1O}%
@@ -409,6 +416,7 @@
 \def\TSwitchParL#1#2#3#4{%
 }
 \def\RSwitchParC#1#2#3#4{%
+   \SavePosAngle{#1C}%
    \LCurvePar{#2}{#3}{#4}{}%  % R curve!
    \SavePosAngle{#1O}%
    \NoOb {\AddToAngle{-180}}%
