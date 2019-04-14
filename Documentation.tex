@@ -377,17 +377,43 @@ in \tablename~\ref{t:example4}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Switches}
 
+\makeatletter
+\def\SwitchTest#1#2#3{%
+    \Straight{5106}
+    \@nameuse{#1}[S#2][#3]{#2}
+    \Straight{5106}
+    ;
+    \draw (S#2O) node {O};
+    \draw (S#2C) node[above] {C};
+    \draw (S#2S) node[above] {S}
+}
+
 \begin{verbwrite}{SwitchNames}
 \begin{tikzpicture}[scale=0.10]
   \def\Angle{90}
-  \draw (5,55) coordinate (Start)    % start layouting tracks here
-  \Rep{1}{\RCSwitch[S1][O]{5142}}
-  ;
-  \def\Angle{90}
-  \draw (15,55) 
-  \Rep{1}{\LCSwitch[S2][O]{5141}}
-  ;
+  \draw (05,55) \SwitchTest{LCSwitch}{5141}{O};
 
+  \def\Angle{90}
+  \draw (15,55) \SwitchTest{LCSwitch}{5141}{C};
+
+  \def\Angle{90}
+  \draw (25,55) \SwitchTest{LCSwitch}{5141}{S};
+
+  \def\Angle{90}
+  \draw (55,55) \SwitchTest{RCSwitch}{5142}{O};
+
+  \def\Angle{90}
+  \draw (85,55) \SwitchTest{RCSwitch}{5142}{C};
+
+  \def\Angle{90}
+  \draw (95,55) \SwitchTest{RCSwitch}{5142}{S};
+\end{tikzpicture}
+\end{verbwrite}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{verbwrite}{SwitchNames1}
+\begin{tikzpicture}[scale=0.10]
   \def\Angle{90}
   \draw (35,55) 
         \LSwitch[S3][O]{5203} 
@@ -402,16 +428,16 @@ in \tablename~\ref{t:example4}.
   ;
 
   % \draw (S1O) node {O};
-  \draw (S1C) node[above] {C};
-  \draw (S1S) node[above] {S};
+  % \draw (S1C) node[above] {C};
+  % \draw (S1S) node[above] {S};
 
   % \draw (S2O) node[above] {O};
   % \draw (S2C) node[above] {C};
-  \draw (S2S) node[above] {S};
+  %\draw (S2S) node[above] {S};
 
   % \draw (S3O) node[above] {O};
-  \draw (S3C) node[above] {C};
-  \draw (S3S) node[above] {S};
+  %\draw (S3C) node[above] {C};
+  %\draw (S3S) node[above] {S};
 
   % \draw (W1O) node[above] {O};
   \draw (W1C) node[above] {C};
