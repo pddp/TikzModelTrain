@@ -76,7 +76,8 @@
 			 \SavePosAngle{inner-0}
 			 \Rep{3}{\RCurve{5100}}
 			 \RSwitch[W2][O]{5204}
-			 \XSwitch[W3][O]{5207}
+			 \XSwitch[W3][C]{5207}
+             -- +(0,0) node[right]{W3}
 			 \RCurve{5100}
 			 \LCurve{5200}
 			 \SavePosAngle{inner-1}
@@ -148,7 +149,7 @@
    \RestPosAngle{outer-4}
    \draw[color=green] (outer-4)
 			 \Rep{2}{\LCurve{5100}}
-			 \Rep{1}{\RCSwitch[B7][S]{5142}} 
+			 \Rep{1}{\RCSwitch[B7][C]{5142}} 
 			 \Rep{2}{\Straight{5106}}
 			 ;
 
@@ -166,7 +167,8 @@
    \draw (inner-0)
 			 \Rep{3}{\LCurve{5100}}
 			 \Rep{1}{\Straight{5106}}
-			 \XSwitch[W4][B]{5207}   %% korrigieren
+			 \XSwitch[W4][O]{5207}   %% korrigieren
+             -- +(0,0) node[left]{W4}
 			 \LSwitch[W5][O]{5203}
 			 \Rep{10}{\Straight{5106}}
 			 \Rep{5}{\RCurve{5200}}
@@ -225,7 +227,7 @@
 			 \Rep{6}{\Straight{5106}}
 			 % \Rep{1}{\LCurve{5100}}
 			 \TSwitch[W7][O]{5214}
-   			 \RestPosAngle{W7L}
+   			 \RestPosAngle{W7C}
 			 \Rep{1}{\RCurve{5206}}
 			 \Rep{1}{\Straight{5108}}
 			 ;

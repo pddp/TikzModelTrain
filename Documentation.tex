@@ -67,14 +67,6 @@ The typical steps are as follows:
      \end{enumerate}
 \end{enumerate}
 
-\section{Up and Down}
-
-Straight tracks can be inclined.
-\begin{itemize}
-  \item \texttt{Up}\{angle\} will start going uphill; the angle is given in degees,
-  \item \texttt{Down}\{angle\} will start going downhill; the angle is given in degees,
-  \item \texttt{Flat} will lay tracks on the current height.
-\end{itemize}
 
 \section{Track Names}
 
@@ -293,12 +285,12 @@ We do this using the following code:
   \def\Angle{90} \draw (05,55) \SwitchTestB{TSwitch}{5214}{O};
   \def\Angle{90} \draw (15,55) \SwitchTestB{TSwitch}{5214}{S};
   \def\Angle{90} \draw (25,55) \SwitchTestB{TSwitch}{5214}{R};
-  % \def\Angle{90} \draw (35,55) \SwitchTestB{TSwitch}{5214}{C};
+  \def\Angle{90} \draw (45,55) \SwitchTestB{TSwitch}{5214}{C};
   % \def\Angle{90} \draw (25,55) \SwitchTestB{LSwitch}{5203}{S};
   % \def\Angle{90} \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
   % \def\Angle{90} \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
-  \def\Angle{90} \draw (75,55) \SwitchTest{XSwitch}{5207}{O};
-  % \def\Angle{90} \draw (95,55) \SwitchTest{RSwitch}{5204}{S};
+  \def\Angle{90} \draw (75,55) \SwitchTestB{XSwitch}{5207}{O};
+  \def\Angle{90} \draw (95,55) \SwitchTestB{XSwitch}{5207}{C};
 \end{tikzpicture}
 \end{verbwrite}
 
@@ -339,6 +331,12 @@ For curced switches, the outer curve is continued.
 If a switch is connected in one of the opposite directions, the connection is at the 
 origin (the point, where the switch is divided into two tracks).
 
+
+Regular straight switches are illustraed in in \figurename~\ref{f:switch1} where the
+same three tracks are layed (stright, swithc, straight).
+Naming conventions are similar for switches 5203 and 5117 as well as for switches 5204 and 5118.
+
+
 \begin{figure}
   \begin{center}
   \input{SwitchNames2}
@@ -346,10 +344,9 @@ origin (the point, where the switch is divided into two tracks).
   \caption{Double switches 5214 and three way turnovers}\label{f:switch2}
 \end{figure}
 
-Regular straight switches are illustraed in in \figurename~\ref{f:switch1} where the
-same three tracks are layed (stright, swithc, straight).
-Naming conventions are similar for switches 5203 and 5117 as well as for switches 5204 and 5118.
-
+Double switches (crossings) and three-way turnovers are shown in \figurename~\ref{f:switch2}. 
+For crossings, only two connection points are allowed: O and C, as 
+the other two connections would just give symmetric solutions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -385,15 +382,26 @@ Naming conventions are similar for switches 5203 and 5117 as well as for switche
 \end{tikzpicture}
 \end{verbwrite}
 
-An example for curved switches is shown in \figurename~\ref{f:switch1}
+An example for curved switches is shown in \figurename~\ref{f:cswitch1}
 
 \begin{figure}
   \begin{center}
   {\input{SwitchExample1}}
   \end{center}
-  \caption{Example for switches}\label{f:switch1}
+  \caption{Example for switches}\label{f:cswitch1}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Up and Down}
+
+Straight tracks can be inclined.
+\begin{itemize}
+  \item \texttt{Up}\{angle\} will start going uphill; the angle is given in degees,
+  \item \texttt{Down}\{angle\} will start going downhill; the angle is given in degees,
+  \item \texttt{Flat} will lay tracks on the current height.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Bigger Examples}
 
 A quite complex example is given in Lst.\ref{ex:example4}

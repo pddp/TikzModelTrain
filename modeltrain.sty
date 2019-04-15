@@ -191,12 +191,12 @@
 }
 \def\DefSwitchX#1#2#3#4{% double switch / cross
     \global\@namedef{RO#1}##1{\XSwitchParO{##1}{#3}{#4}{#1}}%
-    \global\@namedef{RB#1}##1{\XSwitchParB{##1}{#3}{#4}{#1}}%
+    \global\@namedef{RC#1}##1{\XSwitchParC{##1}{#3}{#4}{#1}}%
 }
 \def\DefSwitchT#1#2#3#4{%
     \global\@namedef{TO#1}##1{\TSwitchParO{##1}{#3}{#4}{#1}}%
     \global\@namedef{TS#1}##1{\TSwitchParS{##1}{#3}{#4}{#1}}%
-    \global\@namedef{TL#1}##1{\TSwitchParL{##1}{#3}{#4}{#1}}%
+    \global\@namedef{TC#1}##1{\TSwitchParC{##1}{#3}{#4}{#1}}%
     \global\@namedef{TR#1}##1{\TSwitchParR{##1}{#3}{#4}{#1}}%
 }
 
@@ -447,12 +447,17 @@
    \RestPosAngle{#1O}%
 }
 \def\TSwitchParC#1#2#3#4{%
+   \SavePosAngle{#1C}%
+   \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
    \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
+   \RestPosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
+   \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1R}%
-   \SavePosAngle{#1C}%
-   \SavePosAngle{#1L}%
+   \RestPosAngle{#1O}%
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\RSwitchParC#1#2#3#4{%
@@ -464,20 +469,23 @@
    \SavePosAngle{#1S}%
    \RestPosAngle{#1O}%
 }
-\def\XSwitchParO#1#2#3#4{%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\XSwitchParC#1#2#3#4{% %% korrigieren
+   \SavePosAngle{#1}%
+   \SavePosAngle{#1C}%
+   \RCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1O}%
+   \RestPosAngle{#1}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1R}%
+   \NoOb {\AddToAngle{-180}}%
+   \RCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1S}%
+   \RestPosAngle{#1R}%
+}
+\def\XSwitchParO#1#2#3#4{%  
    \SavePosAngle{#1}%
    \SavePosAngle{#1O}%
-   \RCurvePar{#2}{#3}{#4}{}%
-   \SavePosAngle{#1C}%
-   \RestPosAngle{#1}%
-   \NormalStraight{18}{}%
-   \SavePosAngle{#1S}%
-   \NoOb {\AddToAngle{-180}}%
-   \RCurvePar{#2}{#3}{#4}{}%
-   \RestPosAngle{#1S}%
-}
-\def\XSwitchParB#1#2#3#4{%  %% korrigieren
-   \SavePosAngle{#1}%
    \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%
@@ -485,9 +493,10 @@
    \SavePosAngle{#1S}%
    \NoOb {\AddToAngle{-180}}%
    \LCurvePar{#2}{#3}{#4}{}%
+   \SavePosAngle{#1R}%
    \RestPosAngle{#1S}%
 }
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newenvironment{ConfigSection}[1]
   {\newwrite\ConfigFile
    \immediate\openout\ConfigFile=\jobname.cfg
@@ -499,6 +508,7 @@
    \typeout{Track names: \TrackNameList}
   }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{ConfigSection}{Maerklin}
 \Config{id=5106,type={Straight},german={Straight 1/1},english={straight track 1/1},length={18}}
 \Config{id=5107,type={Straight},german={Straight 1/2},english={straight track 1/2},length={9}}
