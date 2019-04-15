@@ -254,7 +254,7 @@ We do this using the following code:
 }
 \def\SwitchTestB#1#2#3{%
     \SwitchTest{#1}{#2}{#3} ; 
-    \draw (S#2S) node[above] {R}
+    \draw (S#2R) node[above] {R}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -292,8 +292,8 @@ We do this using the following code:
 \begin{tikzpicture}[scale=0.10]
   \def\Angle{90} \draw (05,55) \SwitchTestB{TSwitch}{5214}{O};
   \def\Angle{90} \draw (15,55) \SwitchTestB{TSwitch}{5214}{S};
-  % \def\Angle{90} \draw (25,55) \SwitchTestB{TSwitch}{5214}{C};
-  % \def\Angle{90} \draw (35,55) \SwitchTestB{TSwitch}{5214}{R};
+  \def\Angle{90} \draw (25,55) \SwitchTestB{TSwitch}{5214}{R};
+  % \def\Angle{90} \draw (35,55) \SwitchTestB{TSwitch}{5214}{C};
   % \def\Angle{90} \draw (25,55) \SwitchTestB{LSwitch}{5203}{S};
   % \def\Angle{90} \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
   % \def\Angle{90} \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
@@ -343,7 +343,7 @@ origin (the point, where the switch is divided into two tracks).
   \begin{center}
   \input{SwitchNames2}
   \end{center}
-  \caption{Double wwitches 5214 and three way turnovers}\label{f:switch2}
+  \caption{Double switches 5214 and three way turnovers}\label{f:switch2}
 \end{figure}
 
 Regular straight switches are illustraed in in \figurename~\ref{f:switch1} where the

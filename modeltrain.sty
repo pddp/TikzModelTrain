@@ -106,6 +106,7 @@
 \def\RCSwitch[#1][#2]#3{\@nameuse{CR#2#3}{#1}\NoOb{\StepGleis{#3}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Empty{}
 \def\TrackNameList{}
 \def\TrackNumberList{}
 \pgfkeys{%
@@ -153,8 +154,17 @@
         {\string\ifcurrentbaselanguage{English}{\English}{\German}}\relax} 
   \immediate\write\ConfigFile{\string\global\string\@nameuse{Def\ConfType}%
         {\Id}{\ConfLength}{\ConfRadius}{\ConfAngle}\relax}\relax
+  
+  \ifx\TrackNames\Empty
+    \global\edef\TrackNameList{\ConfType{\Id}}\relax
+  \else
     \global\edef\TrackNameList{\TrackNameList,\ConfType{\Id}}\relax
-    \global\edef\TrackNumberList{\TrackNumberList,\Id}\relax
+  \fi
+  \ifx\TrackNumberList\Empty
+     \global\edef\TrackNumberList{\Id}\relax
+  \else
+     \global\edef\TrackNumberList{\TrackNumberList,\Id}\relax
+  \fi
 }
 \def\DefStraight#1#2#3#4{\global\@namedef{G#1}{\NormalStraight{#2}{#1}}\relax}
 \def\DefCurve#1#2#3#4{\global\@namedef{R#1}{\RCurvePar{#3}{#4}{#1}}\global\@namedef{L#1}{\LCurvePar{#3}{#4}{#1}}}
@@ -407,28 +417,36 @@
    \SavePosAngle{#1R}%
    \RestPosAngle{#1O}%
    \LCurvePar{#2}{#3}{#4}{}%
-   \SavePosAngle{#1L}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1S}%
 }
 \def\TSwitchParS#1#2#3#4{%
-   \SavePosAngle{#1O}%
-   \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
+   \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1R}%
+   \RestPosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
+   \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
-   \SavePosAngle{#1L}%
+   \RestPosAngle{#1O}%
 }
 \def\TSwitchParR#1#2#3#4{%
+   \SavePosAngle{#1R}%
+   \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
    \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
-   \SavePosAngle{#1R}%
+   \RestPosAngle{#1O}%
+   \NoOb {\AddToAngle{-180}}%
+   \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
-   \SavePosAngle{#1L}%
+   \RestPosAngle{#1O}%
 }
 \def\TSwitchParC#1#2#3#4{%
-   \SavePosAngle{#1}%
    \SavePosAngle{#1O}%
    \NormalStraight{18}{}%
    \SavePosAngle{#1S}%
