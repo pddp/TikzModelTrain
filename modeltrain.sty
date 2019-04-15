@@ -397,6 +397,7 @@
    \SavePosAngle{#1C}%
    \RestPosAngle{#1O}%
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\TSwitchParO#1#2#3#4{%
    \SavePosAngle{#1O}%
    \NormalStraight{18}{}%
@@ -407,14 +408,35 @@
    \RestPosAngle{#1O}%
    \LCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1L}%
+   \SavePosAngle{#1C}%
    \RestPosAngle{#1S}%
 }
 \def\TSwitchParS#1#2#3#4{%
+   \SavePosAngle{#1O}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1S}%
+   \SavePosAngle{#1R}%
+   \SavePosAngle{#1C}%
+   \SavePosAngle{#1L}%
 }
 \def\TSwitchParR#1#2#3#4{%
+   \SavePosAngle{#1O}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1S}%
+   \SavePosAngle{#1R}%
+   \SavePosAngle{#1C}%
+   \SavePosAngle{#1L}%
 }
-\def\TSwitchParL#1#2#3#4{%
+\def\TSwitchParC#1#2#3#4{%
+   \SavePosAngle{#1}%
+   \SavePosAngle{#1O}%
+   \NormalStraight{18}{}%
+   \SavePosAngle{#1S}%
+   \SavePosAngle{#1R}%
+   \SavePosAngle{#1C}%
+   \SavePosAngle{#1L}%
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\RSwitchParC#1#2#3#4{%
    \SavePosAngle{#1C}%
    \LCurvePar{#2}{#3}{#4}{}%  % R curve!
@@ -426,6 +448,7 @@
 }
 \def\XSwitchParO#1#2#3#4{%
    \SavePosAngle{#1}%
+   \SavePosAngle{#1O}%
    \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1C}%
    \RestPosAngle{#1}%

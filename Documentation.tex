@@ -241,36 +241,31 @@ We do this using the following code:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Switches}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
 \def\SwitchTest#1#2#3{%
-    \Straight{5106}
+    \Straight{5107}
     \@nameuse{#1}[S#2][#3]{#2}
-    \Straight{5106}
+    \Straight{5107}
     ;
     \draw (S#2O) node {O};
     \draw (S#2C) node[above] {C};
     \draw (S#2S) node[above] {S}
 }
+\def\SwitchTestB#1#2#3{%
+    \SwitchTest{#1}{#2}{#3} ; 
+    \draw (S#2S) node[above] {R}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{verbwrite}{SwitchNames}
 \begin{tikzpicture}[scale=0.10]
-  \def\Angle{90}
-  \draw (05,55) \SwitchTest{LCSwitch}{5141}{O};
-
-  \def\Angle{90}
-  \draw (15,55) \SwitchTest{LCSwitch}{5141}{C};
-
-  \def\Angle{90}
-  \draw (25,55) \SwitchTest{LCSwitch}{5141}{S};
-
-  \def\Angle{90}
-  \draw (55,55) \SwitchTest{RCSwitch}{5142}{O};
-
-  \def\Angle{90}
-  \draw (85,55) \SwitchTest{RCSwitch}{5142}{C};
-
-  \def\Angle{90}
-  \draw (95,55) \SwitchTest{RCSwitch}{5142}{S};
+  \def\Angle{90} \draw (05,55) \SwitchTest{LCSwitch}{5141}{O};
+  \def\Angle{90} \draw (15,55) \SwitchTest{LCSwitch}{5141}{C};
+  \def\Angle{90} \draw (25,55) \SwitchTest{LCSwitch}{5141}{S};
+  \def\Angle{90} \draw (55,55) \SwitchTest{RCSwitch}{5142}{O};
+  \def\Angle{90} \draw (85,55) \SwitchTest{RCSwitch}{5142}{C};
+  \def\Angle{90} \draw (95,55) \SwitchTest{RCSwitch}{5142}{S};
 \end{tikzpicture}
 \end{verbwrite}
 
@@ -278,81 +273,36 @@ We do this using the following code:
 
 \begin{verbwrite}{SwitchNames1}
 \begin{tikzpicture}[scale=0.10]
-  \def\Angle{90}
-  \draw (05,55) \SwitchTest{LSwitch}{5203}{O};
-
-  \def\Angle{90}
-  \draw (15,55) \SwitchTest{LSwitch}{5203}{C};
-
-  \def\Angle{90}
-  \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
-
-  \def\Angle{90}
-  \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
-
-  \def\Angle{90}
-  \draw (75,55) \SwitchTest{RSwitch}{5204}{C};
-
-  \def\Angle{90}
-  \draw (95,55) \SwitchTest{RSwitch}{5204}{S};
-
-  % \def\Angle{90}
-  % \draw (55,55) 
-  %       \LSwitch[S3][O]{5203} 
-  % ;
-  % \def\Angle{90}
-  % \draw (65,55) 
-  %   \LSwitch[W1][O]{5117}  % Switch named W1
-  % ;
-  % \def\Angle{90}
-  % \draw (75,55) 
-  %   \RSwitch[W2][O]{5118} % Switch named W2
-  % ;
-
-  % \draw (S1O) node {O};
-  % \draw (S1C) node[above] {C};
-  % \draw (S1S) node[above] {S};
-
-  % \draw (S2O) node[above] {O};
-  % \draw (S2C) node[above] {C};
-  %\draw (S2S) node[above] {S};
-
-  % \draw (S3O) node[above] {O};
-  %\draw (S3C) node[above] {C};
-  %\draw (S3S) node[above] {S};
-
-  % \draw (W1O) node[above] {O};
-  % \draw (W1C) node[above] {C};
-  % \draw (W1S) node[above] {S};
-
-  % \draw (W2O) node[above] {O};
-  % \draw (W2C) node[above] {C};
-  % \draw (W2S) node[above] {S};
+  \def\Angle{90} \draw (05,55) \SwitchTest{LSwitch}{5203}{O};
+  \def\Angle{90} \draw (15,55) \SwitchTest{LSwitch}{5203}{C};
+  \def\Angle{90} \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
+  \def\Angle{90} \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
+  \def\Angle{90} \draw (75,55) \SwitchTest{RSwitch}{5204}{C};
+  \def\Angle{90} \draw (95,55) \SwitchTest{RSwitch}{5204}{S};
 \end{tikzpicture}
 \end{verbwrite}
 
-Switch layout and labels for curved switches 5141 (left switch) 5142 (right switch) 
-and is illustrated in \figurename~\ref{f:switch0}.
-Three tracks are layed here: first a straight track upwards, then comes the switch with
-different points to join, then comes agein a straight track.
-An image of such a curved switch is shown in \figurename~\ref{f:5142}.
 
-Generally, tracks are continued in straight direction if the switch has a straight part.
-For curced switches, the outer curve is continued.
-If a switch is connected in one of the opposite directions, the connection is at the 
-origin (the point, where the switch is divided into two tracks).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}
-\begin{tabular}{cc}
-   \includegraphics[width=0.2\linewidth]{img/mm5142.jpg} & 5142 (right)\\
-\end{tabular}
-   \caption{Curved Switch right number 5142}\label{f:5142}
-\end{figure}
+% \Config{id=5214,type={SwitchT},german={Dreiwegweiche},english={three way turnover},radius={43.74},angle={24.3}}
+% \Config{id=5207,type={SwitchX},german={Doppelweiche / Kreuzungsweiche},english={double switch / cross},radius={43.74},angle={24.3}}
 
+\begin{verbwrite}{SwitchNames2}
+\begin{tikzpicture}[scale=0.10]
+  \def\Angle{90} \draw (05,55) \SwitchTestB{TSwitch}{5214}{O};
+  \def\Angle{90} \draw (15,55) \SwitchTestB{TSwitch}{5214}{S};
+  % \def\Angle{90} \draw (25,55) \SwitchTestB{TSwitch}{5214}{C};
+  % \def\Angle{90} \draw (35,55) \SwitchTestB{TSwitch}{5214}{R};
+  % \def\Angle{90} \draw (25,55) \SwitchTestB{LSwitch}{5203}{S};
+  % \def\Angle{90} \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
+  % \def\Angle{90} \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
+  \def\Angle{90} \draw (75,55) \SwitchTest{XSwitch}{5207}{O};
+  % \def\Angle{90} \draw (95,55) \SwitchTest{RSwitch}{5204}{S};
+\end{tikzpicture}
+\end{verbwrite}
 
-Regular straight switches are illustraed in in \figurename~\ref{f:switch1} where the
-same three tracks are layed (stright, swithc, straight).
-Naming conventions are similar for switches 5203 and 5117 as well as for switches 5204 and 5118.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure}
   \begin{center}
@@ -360,6 +310,19 @@ Naming conventions are similar for switches 5203 and 5117 as well as for switche
   \end{center}
   \caption{Switches 5141 (switch left, shown on the left)
               and 5142 (switch right, shown on the right)}\label{f:switch0}
+\end{figure}
+
+Switch layout and labels for curved switches 5141 (left switch) 5142 (right switch) 
+and is illustrated in \figurename~\ref{f:switch0}.
+Three tracks are layed here: first a straight half length track upwards, then comes the switch with
+different points to join, then comes agein a straight track half length.
+An image of such a curved switch is shown in \figurename~\ref{f:5142}.
+
+\begin{figure}
+\begin{tabular}{cc}
+   \includegraphics[width=0.2\linewidth]{img/mm5142.jpg} & 5142 (right)\\
+\end{tabular}
+   \caption{Curved Switch right number 5142}\label{f:5142}
 \end{figure}
 
 
@@ -370,6 +333,23 @@ Naming conventions are similar for switches 5203 and 5117 as well as for switche
   \caption{Switches 5203 (switch left, shown on the left)
               and 5204 (switch right, shown on the right)}\label{f:switch1}
 \end{figure}
+
+Generally, tracks are continued in straight direction if the switch has a straight part.
+For curced switches, the outer curve is continued.
+If a switch is connected in one of the opposite directions, the connection is at the 
+origin (the point, where the switch is divided into two tracks).
+
+\begin{figure}
+  \begin{center}
+  \input{SwitchNames2}
+  \end{center}
+  \caption{Double wwitches 5214 and three way turnovers}\label{f:switch2}
+\end{figure}
+
+Regular straight switches are illustraed in in \figurename~\ref{f:switch1} where the
+same three tracks are layed (stright, swithc, straight).
+Naming conventions are similar for switches 5203 and 5117 as well as for switches 5204 and 5118.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
