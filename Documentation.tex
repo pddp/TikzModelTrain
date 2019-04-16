@@ -277,18 +277,12 @@ We do this using the following code:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \Config{id=5214,type={SwitchT},german={Dreiwegweiche},english={three way turnover},radius={43.74},angle={24.3}}
-% \Config{id=5207,type={SwitchX},german={Doppelweiche / Kreuzungsweiche},english={double switch / cross},radius={43.74},angle={24.3}}
-
 \begin{verbwrite}{SwitchNames2}
 \begin{tikzpicture}[scale=0.10]
   \def\Angle{90} \draw (05,55) \SwitchTestB{TSwitch}{5214}{O};
   \def\Angle{90} \draw (15,55) \SwitchTestB{TSwitch}{5214}{S};
   \def\Angle{90} \draw (25,55) \SwitchTestB{TSwitch}{5214}{R};
   \def\Angle{90} \draw (45,55) \SwitchTestB{TSwitch}{5214}{C};
-  % \def\Angle{90} \draw (25,55) \SwitchTestB{LSwitch}{5203}{S};
-  % \def\Angle{90} \draw (35,55) \SwitchTest{LSwitch}{5203}{S};
-  % \def\Angle{90} \draw (55,55) \SwitchTest{RSwitch}{5204}{O};
   \def\Angle{90} \draw (75,55) \SwitchTestB{XSwitch}{5207}{O};
   \def\Angle{90} \draw (95,55) \SwitchTestB{XSwitch}{5207}{C};
 \end{tikzpicture}
@@ -384,7 +378,6 @@ the other two connections would just give symmetric solutions.
 
 An example for curved switches is shown in \figurename~\ref{f:cswitch1}
 
-
 \begin{figure}
   \begin{center}
   {\input{SwitchExample1}}
@@ -392,62 +385,83 @@ An example for curved switches is shown in \figurename~\ref{f:cswitch1}
   \caption{Example for switches}\label{f:cswitch1}
 \end{figure}
 
-We now show some combinations of switches in \figurename~\ref{switchlayout1}.
+We now show some combinations of switches in \figurename~\ref{switchlayout1}
+and in \figurename~\ref{switchlayout2}.
 
 \begin{verbwrite}{SwitchLayout1}
 \bgroup
 \def\showtracknames{1}
 \begin{tikzpicture}[scale=0.16]
-  % \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
-
   \def\Angle{00}
   \draw (5,55) coordinate (Start)    % start layouting tracks here
-    \Straight{5110}
-    \Straight{5109}
+    \Straight{5110} \Straight{5109}
     \Straight{5106} \Straight{5106}
-    \LSwitch[W1][S]{5137L}
-    \Straight{5129}
-      ;
+    \LSwitch[W1][S]{5137L} \Straight{5129} ;
+
   \RestPosAngle{W1C}
   \draw (W1C) 
-    \LCurve{5102}
-    \XSwitch[X1][C]{5114}
-    \RCurve{5102}
-    \LSwitch[W2][C]{5137L}
-    \Straight{5129}
-    ;
+    \LCurve{5102} \XSwitch[X1][C]{5114} \RCurve{5102}
+    \LSwitch[W2][C]{5137L} \Straight{5129} ;
+
+  \RestPosAngle{W2S}
+  \draw (W2S) \Straight{5129} \Straight{5106} \Straight{5106} ;
+
+  \RestPosAngle{X1S}
+  \draw (X1S) \Straight{5129} \Straight{5106} ;
+
+  \RestPosAngle{X1O}
+  \draw (X1O) \Straight{5129} \Straight{5106} ;
+\end{tikzpicture}
+\egroup
+\end{verbwrite}
+
+\begin{verbwrite}{SwitchLayout2}
+\bgroup
+\def\showtracknames{1}
+\begin{tikzpicture}[scale=0.16]
+  \def\Angle{00}
+  \draw (5,55) coordinate (Start)    % start layouting tracks here
+    \Straight{5106} \Straight{5106}
+    \LSwitch[W1][S]{5203} 
+    \Straight{5106} ;
+
+        
+  \RestPosAngle{W1C}
+  \draw (W1C) 
+    % \LCurve{5102} \XSwitch[X1][C]{5114} \RCurve{5102}
+    \XSwitch[X1][C]{5207} 
+    \LSwitch[W2][C]{5203} ;
 
   \RestPosAngle{W2S}
   \draw (W2S) 
-    \Straight{5129}
-    \Straight{5106}
-    \Straight{5106}
-    ;
+    \Straight{5106} 
+    \Straight{5106} \Straight{5106} ;
 
   \RestPosAngle{X1S}
   \draw (X1S) 
-    \Straight{5129}
-    \Straight{5106}
-    ;
+    \Straight{5106} \Straight{5106} ;
 
   \RestPosAngle{X1O}
   \draw (X1O) 
-    \Straight{5129}
-    \Straight{5106}
-    ;
-
+    \Straight{5106} ;
 \end{tikzpicture}
 \egroup
 \end{verbwrite}
 
 An example for curved switches is shown in \figurename~\ref{f:cswitch1}
 
-
 \begin{figure}
   \begin{center}
   {\input{SwitchLayout1}}
   \end{center}
   \caption{Example for layout of switches}\label{f:switchlayout1}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchLayout2}}
+  \end{center}
+  \caption{Example for layout of switches}\label{f:switchlayout2}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
