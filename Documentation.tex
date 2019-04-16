@@ -384,11 +384,70 @@ the other two connections would just give symmetric solutions.
 
 An example for curved switches is shown in \figurename~\ref{f:cswitch1}
 
+
 \begin{figure}
   \begin{center}
   {\input{SwitchExample1}}
   \end{center}
   \caption{Example for switches}\label{f:cswitch1}
+\end{figure}
+
+We now show some combinations of switches in \figurename~\ref{switchlayout1}.
+
+\begin{verbwrite}{SwitchLayout1}
+\bgroup
+\def\showtracknames{1}
+\begin{tikzpicture}[scale=0.16]
+  % \draw (0,0) -- (100,0) -- (100,105) -- (0,105) -- cycle; %% frame
+
+  \def\Angle{00}
+  \draw (5,55) coordinate (Start)    % start layouting tracks here
+    \Straight{5110}
+    \Straight{5109}
+    \Straight{5106} \Straight{5106}
+    \LSwitch[W1][S]{5137L}
+    \Straight{5129}
+      ;
+  \RestPosAngle{W1C}
+  \draw (W1C) 
+    \LCurve{5102}
+    \XSwitch[X1][C]{5114}
+    \RCurve{5102}
+    \LSwitch[W2][C]{5137L}
+    \Straight{5129}
+    ;
+
+  \RestPosAngle{W2S}
+  \draw (W2S) 
+    \Straight{5129}
+    \Straight{5106}
+    \Straight{5106}
+    ;
+
+  \RestPosAngle{X1S}
+  \draw (X1S) 
+    \Straight{5129}
+    \Straight{5106}
+    ;
+
+  \RestPosAngle{X1O}
+  \draw (X1O) 
+    \Straight{5129}
+    \Straight{5106}
+    ;
+
+\end{tikzpicture}
+\egroup
+\end{verbwrite}
+
+An example for curved switches is shown in \figurename~\ref{f:cswitch1}
+
+
+\begin{figure}
+  \begin{center}
+  {\input{SwitchLayout1}}
+  \end{center}
+  \caption{Example for layout of switches}\label{f:switchlayout1}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
