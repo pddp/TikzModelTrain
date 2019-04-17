@@ -197,7 +197,7 @@
 
 \def\SavePosAngle#1{coordinate(#1)%
     \NoOb{\@namegedef{#1-angle}{\Angle}%
-          \@namegedef{#1-height}{\Height}}}
+        \@namegedef{#1-height}{\Height}\ShowTrackName{#1}}}
 
 \def\RestPosAngle#1{(#1)% 
     \NoOb{\global\edef\Angle{\@nameuse{#1-angle}}%
@@ -240,14 +240,16 @@
         \pgfmathsetmacro\XEndA{\Angle +#4 - #2}%
         \global\edef\StartA{\XStartA}%
         \global\edef\EndA{\XEndA}%
-        \ShowTrackName{#3}%
+        % \ShowTrackName{#3}%
     }%
     % [draw]
     %%  edge[blue] +(0,0)
 	arc [radius=#1,                % fixed radius
          start angle=\StartA,      % Angle +  90
 	 	 end angle=\EndA]          % Angle +  60
-         node {\AddToAngle{-#2}#5}%
+         node[midway] {\AddToAngle{-#2}#5\relax
+            \ShowTrackName{#3}\relax
+         }%
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                              
@@ -467,6 +469,7 @@
    \SavePosAngle{#1}%
    \SavePosAngle{#1C}%
    \RCurvePar{#2}{#3}{#4}{}%
+   % \NoOb {\AddToAngle{-180}}%
    \SavePosAngle{#1O}%
    \RestPosAngle{#1}%
    \NormalStraight{#5}{}%
@@ -474,7 +477,7 @@
    \NoOb {\AddToAngle{-180}}%
    \RCurvePar{#2}{#3}{#4}{}%
    \SavePosAngle{#1S}%
-   \NoOb {\AddToAngle{-180}}%  
+   \NoOb {\AddToAngle{-180}}%
    \NormalStraight{#5}{}%   % nicer drawing -- show switch
    \RestPosAngle{#1R}%
 }
@@ -510,6 +513,7 @@
 \Config{id=5106,type={Straight},german={Straight 1/1},english={straight track 1/1},length={18}}
 \Config{id=5107,type={Straight},german={Straight 1/2},english={straight track 1/2},length={9}}
 \Config{id=5108,type={Straight},german={Straight 1/4},english={straight track 1/4},length={4.5}}
+\Config{id=5208,type={Straight},german={Straight},english={straight track},length={0.8}}
 \Config{id=5109,type={Straight},german={Straight 3/16},english={straight track 3/16},length={3.35}}
 \Config{id=5129,type={Straight},german={Straight},english={straight track},length={7}}
 \Config{id=5110,type={Straight},german={Straight 1/8},english={straight track 1/8},length={2.25}}

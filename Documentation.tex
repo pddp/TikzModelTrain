@@ -389,79 +389,117 @@ We now show some combinations of switches in \figurename~\ref{switchlayout1}
 and in \figurename~\ref{switchlayout2}.
 
 \begin{verbwrite}{SwitchLayout1}
+\documentclass{standalone}
+\usepackage{modeltrain}
+\begin{document}
 \bgroup
 \def\showtracknames{1}
 \begin{tikzpicture}[scale=0.16]
   \def\Angle{00}
   \draw (5,55) coordinate (Start)    % start layouting tracks here
-    \Straight{5110} \Straight{5109}
-    \Straight{5106} \Straight{5106}
-    \LSwitch[W1][S]{5137L} \Straight{5129} ;
+    \Straight{5110} 
+    \Straight{5109}
+    \Straight{5106} 
+    \Straight{5106}
+    \LSwitch[W1][S]{5137L} 
+    \Straight{5129} ;
 
   \RestPosAngle{W1C}
   \draw (W1C) 
     \LCurve{5102} \XSwitch[X1][C]{5114} \RCurve{5102}
     \LSwitch[W2][C]{5137L} \Straight{5129} ;
 
-  \RestPosAngle{W2S}
-  \draw (W2S) \Straight{5129} \Straight{5106} \Straight{5106} ;
+  \draw (X1S) node{S};
+  \draw (X1O) node{O};
 
-  \RestPosAngle{X1S}
-  \draw (X1S) \Straight{5129} \Straight{5106} ;
+  \RestPosAngle{W2S}
+  \draw (W2S) \Straight{5106} \Straight{5106} \Straight{5109} \Straight{5110};
 
   \RestPosAngle{X1O}
-  \draw (X1O) \Straight{5129} \Straight{5106} ;
+  \draw[green] (X1O) 
+    % \Straight{5129} 
+    \Straight{5109} 
+    \Straight{5110} 
+    \Straight{5106} 
+    ;
+
+  \RestPosAngle{X1S}
+  \draw[red] (X1S) 
+    \Straight{5109} 
+    \Straight{5110} 
+    \Straight{5106} 
+    ;
 \end{tikzpicture}
 \egroup
+\IfFileExists{0700.pdf}{\\\includegraphics[page=2,bb=400 480 700 630,clip]{0700.pdf}}{}
+\end{document}
 \end{verbwrite}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{verbwrite}{SwitchLayout2}
+\documentclass{standalone}
+\usepackage{modeltrain}
+\begin{document}
 \bgroup
 \def\showtracknames{1}
-\begin{tikzpicture}[scale=0.16]
+\begin{tikzpicture}[scale=0.25]
   \def\Angle{00}
   \draw (5,55) coordinate (Start)    % start layouting tracks here
     \Straight{5106} \Straight{5106}
     \LSwitch[W1][S]{5203} 
-    \Straight{5106} ;
-
+    % \Straight{5106} 
+    ;
         
   \RestPosAngle{W1C}
   \draw (W1C) 
-    % \LCurve{5102} \XSwitch[X1][C]{5114} \RCurve{5102}
+    \Straight{5208} 
     \XSwitch[X1][C]{5207} 
-    \LSwitch[W2][C]{5203} ;
+    \Straight{5208} 
+    \LSwitch[W4][C]{5203} ;
 
-  \RestPosAngle{W2S}
-  \draw (W2S) 
+  \RestPosAngle{W4S}
+  \draw (W4S) 
     \Straight{5106} 
-    \Straight{5106} \Straight{5106} ;
+    \Straight{5106} 
+    % \Straight{5106} 
+    ;
 
   \RestPosAngle{X1S}
   \draw (X1S) 
-    \Straight{5106} \Straight{5106} ;
+    \Straight{5106} 
+    % \Straight{5106} 
+    ;
 
   \RestPosAngle{X1O}
   \draw (X1O) 
     \Straight{5106} ;
 \end{tikzpicture}
 \egroup
+\IfFileExists{0700.pdf}{\\\includegraphics[page=3,bb=50 150 280 300,clip]{0700.pdf}}{}
+\end{document}
 \end{verbwrite}
 
 An example for curved switches is shown in \figurename~\ref{f:cswitch1}
 
 \begin{figure}
   \begin{center}
-  {\input{SwitchLayout1}}
+     \def\documentclass#1{}
+     \def\usepackage#1{}
+     \def\document{}
+     \def\enddocument{}
+     {\input{SwitchLayout1}}
   \end{center}
-  \caption{Example for layout of switches}\label{f:switchlayout1}
+  \caption{Example for layout of switches for X-Switch 5114}\label{f:switchlayout1}
 \end{figure}
 
 \begin{figure}
   \begin{center}
-  {\input{SwitchLayout2}}
+     \def\documentclass#1{}
+     \def\usepackage#1{}
+     \def\document{}
+     \def\enddocument{}
+     {\input{SwitchLayout2}}
   \end{center}
-  \caption{Example for layout of switches}\label{f:switchlayout2}
+  \caption{Example for layout of switches for X-Switch 5207}\label{f:switchlayout2}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
